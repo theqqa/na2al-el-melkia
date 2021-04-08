@@ -68,6 +68,8 @@ class ReportController extends Controller
     {
         $rep_id =null;
         $rep=Representative::all();
+                $date_range=null;
+
         $rep_hists = RepresentativeHistory::orderBy('created_at', 'desc');
         if ($request->has('rep_id') && $request->rep_id != "null"){
             $rep_id = $request->rep_id;
@@ -86,6 +88,8 @@ class ReportController extends Controller
     public function catch_receipts_report(Request $request)
     {
         $rep_id =null;
+         $date_range=null;
+
         $rep=Representative::all();
         $catch_receipts = CatchReceipt::orderBy('created_at', 'desc');
         if ($request->has('rep_id') && $request->rep_id != "null"){
@@ -105,6 +109,8 @@ class ReportController extends Controller
     {
         $expense_id=null;
         $expense=Expense::all();
+                        $date_range=null;
+
         $permission_exchanges = PermissionExchange::orderBy('created_at', 'desc');
         if ($request->has('expense_id') && $request->expense_id != "null"){
             $expense_id = $request->expense_id;
@@ -123,6 +129,8 @@ class ReportController extends Controller
     public function treasury_balance_report(Request $request)
     {
         $treasury_balances = TreasuryBalanceHistory::orderBy('created_at', 'desc');
+                        $date_range=null;
+
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
@@ -138,6 +146,8 @@ class ReportController extends Controller
     {
         $user_id =null;
         $date_range=null;
+                        $date_range=null;
+
         $users = Staff::whereRoleId('3')->get();
 
         $business_settings_renewal = BusinessSetting::where('type', 'taam_expenses_renewal')->first();
@@ -173,7 +183,7 @@ class ReportController extends Controller
                 }
             }
         }
-        return view('backend.reports.users_taam_report', compact('transactions','business_settings_renewal','business_settings_ownership','user_id','date_range','users','total_1','total_all','transactions_count'));
+        return view('backend.reports.users_taam_report', compact('transactions','business_settings_renewal','business_settings_ownership','user_id','date_range','users','total_all','transactions_count'));
     }
     public function stock_report(Request $request)
     {

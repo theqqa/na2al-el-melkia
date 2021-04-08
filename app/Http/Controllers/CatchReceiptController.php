@@ -30,6 +30,7 @@ class CatchReceiptController extends Controller
     public function index(Request $request)
     {
         $sort_search =null;
+        $date_range=null;
         $catch_receipts = CatchReceipt::orderBy('created_at', 'desc');
         if ($request->date_range) {
             $date_range = $request->date_range;

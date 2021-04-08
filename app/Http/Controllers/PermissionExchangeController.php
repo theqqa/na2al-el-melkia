@@ -30,6 +30,7 @@ class PermissionExchangeController extends Controller
     public function index(Request $request)
     {
         $expense_id =null;
+        $date_range=null;
         $expense=Expense::all();
 
         $permission_exchanges = PermissionExchange::orderBy('created_at', 'desc');

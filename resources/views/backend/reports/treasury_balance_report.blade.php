@@ -54,7 +54,7 @@
 
                 <td><a href="{{route('catch_receipts.edit',$treasury_balance->catchReceipt->id )}}">{{__('View Catch Receipt')}}</a></td>
             @elseif(!empty($treasury_balance->permission_exchange_id))
-                <td><a href="{{route('permission_exchanges.show',$treasury_balance->permission_exchange_id)}}">{{__('View Transaction')}}</a></td>
+                <td><a href="{{route('permission_exchanges.show',$treasury_balance->permission_exchange_id)}}">{{__('Permission Exchange')}}</a></td>
             @endif
             <td>{{ $treasury_balance->balance_before}}</td>
             <td>{{ $treasury_balance->balance_request }}</td>
