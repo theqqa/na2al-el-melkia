@@ -29,7 +29,24 @@
                         <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" value="{{ $expense->getTranslation('name', $lang) }}" class="form-control" required>
                     </div>
                 </div>
-
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label" for="email">{{translate('Initial Balance')}}</label>
+                    <div class="input-group  col-sm-9">
+                        <input type="number" placeholder="{{translate('Initial Balance')}}" id="initial_balance" value="{{$expense->initial_balance}}" name="initial_balance" class="form-control" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">SR</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label" for="email">{{translate('Register At')}}</label>
+                    <div class="input-group  col-sm-9">
+                        <input type="date" placeholder="{{translate('Register At')}}" id="register_at" name="register_at" value="{{ date('Y-m-d',strtotime($expense->register_at)) }}" class="form-control" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">SR</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group mb-0 text-right">
                     <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
                 </div>

@@ -17,9 +17,26 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label" for="name">{{translate('Name')}}</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
+                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" required>
+                        @if ($errors->has('name'))
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                        @endif
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label" for="email">{{translate('Email')}}</label>
+                    <div class="col-sm-9">
+                        <input type="email" placeholder="{{translate('Email')}}" id="email" name="email" class="form-control" required>
+                    </div>
+                </div>
+{{--                <div class="form-group row">--}}
+{{--                    <label class="col-sm-3 col-from-label" for="email">{{translate('Code')}}</label>--}}
+{{--                    <div class="col-sm-9">--}}
+                        <input type="hidden"  id="code" name="code" class="form-control"  value="{{ \Illuminate\Support\Str::random(8) }}" readonly>
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label" for="email">{{translate('Transfer Price')}}</label>
                     <div class="col-sm-9">
@@ -32,10 +49,22 @@
                         <input type="number" placeholder="{{translate('Renewal Price')}}" id="renewal_price" name="renewal_price" class="form-control" required>
                     </div>
                 </div>
+{{--                <div class="form-group row">--}}
+{{--                    <label class="col-sm-3 col-from-label" for="password">{{translate('Deserved Amount')}}</label>--}}
+{{--                    <div class="col-sm-9">--}}
+{{--                        <input type="number" placeholder="{{translate('Deserved Amount')}}" id="deserved_amount" name="deserved_amount" class="form-control" required>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label" for="password">{{translate('Deserved Amount')}}</label>
+                    <label class="col-sm-3 col-from-label" for="email">{{translate('Initial Balance')}}</label>
                     <div class="col-sm-9">
-                        <input type="number" placeholder="{{translate('Deserved Amount')}}" id="deserved_amount" name="deserved_amount" class="form-control" required>
+                        <input type="number" placeholder="{{translate('Initial Balance')}}" id="initial_balance" name="initial_balance" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label" for="email">{{translate('Register At')}}</label>
+                    <div class="col-sm-9">
+                        <input type="date" placeholder="{{translate('Register At')}}" id="register_at" name="register_at" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">

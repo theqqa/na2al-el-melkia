@@ -23,6 +23,12 @@
                       </div>
                   </div>
                   <div class="form-group row">
+                      <label class="col-sm-3 control-label" for="name">{{translate('Code')}}</label>
+                      <div class="col-sm-9">
+                          <input type="text" placeholder="{{translate('Code')}}" id="code" value="{{$catch_receipt->code}}" name="code" class="form-control" required>
+                      </div>
+                  </div>
+                  <div class="form-group row">
                       <label class="col-sm-3 control-label" for="name">{{translate('Date')}}</label>
                       <div class="col-sm-9">
                           <input type="date" placeholder="{{translate('Date')}}" id="date" value="{{ date('Y-m-d',strtotime($catch_receipt->date)) }}" name="date" class="form-control" required>
@@ -41,7 +47,10 @@
                   <div class="form-group row">
                       <label class="col-sm-3 control-label" for="name">{{translate('Payment By')}}</label>
                       <div class="col-sm-9">
-                          <input type="text" placeholder="{{translate('Payment By')}}"  value="{{$catch_receipt->payment_by}}" id="payment_by" name="payment_by" class="form-control" required>
+                          <select class="form-control aiz-selectpicker" name="payment_by" id="payment_by" data-live-search="true" required>
+                              <option value="1" @if($catch_receipt->payment_by ==1 ) selected @endif>{{ translate('cache')}}</option>
+                              <option value="2"  @if($catch_receipt->payment_by ==2 ) selected @endif>{{ translate('Bank transfer')}}</option>
+                          </select>
                       </div>
                   </div>
 

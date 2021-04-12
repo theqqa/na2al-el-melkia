@@ -13,18 +13,18 @@
             <div class="card-body">
                 <form action="{{ route('users_taam_report.index') }}" method="GET">
                     <div class="card-header row gutters-5">
-                        <div class="col text-center text-md-left">
-                            <h5 class="mb-md-0 h6">{{ translate('Sort by User') }}</h5>
-                        </div>
+{{--                        <div class="col text-center text-md-left">--}}
+{{--                            <h5 class="mb-md-0 h6">{{ translate('Sort by User') }}</h5>--}}
+{{--                        </div>--}}
 
-                            <div class="col-md-3 ml-auto">
-                                <select class="from-control aiz-selectpicker" name="user_id" required>
-                                    <option value="null" @if(empty($user_id ) )selected @endif>{{ translate('All') }}</option>
-                                    @foreach($users as $key=>$val)
-                                        <option value="{{$val->user->id}}" @if($user_id == $val->user->id) selected @endif>{{ $val->user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="col-md-3 ml-auto">--}}
+{{--                                <select class="from-control aiz-selectpicker" name="user_id" required>--}}
+{{--                                    <option value="null" @if(empty($user_id ) )selected @endif>{{ translate('All') }}</option>--}}
+{{--                                    @foreach($users as $key=>$val)--}}
+{{--                                        <option value="{{$val->user->id}}" @if($user_id == $val->user->id) selected @endif>{{ $val->user->name }}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
                         <div class="col-md-3">
                             <div class="form-group mb-0">
@@ -50,65 +50,23 @@
                 <table class="table table-bordered  mb-0">
                     <thead>
                         <tr>
-                          <th>#</th>
-                            <th>{{ translate('User Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
-                            <th>{{translate('Transactions Id')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Type') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Price') }}</th>
-
-                            <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Total Taam') }}</th>
+{{--                          <th>#</th>--}}
+                            <th>{{ translate('Service Name') }}</th>
+                            <th data-breakpoints="lg">{{ translate('Count') }}</th>
+{{--                            <th data-breakpoints="lg">{{ translate('Price') }}</th>--}}
+                            <th data-breakpoints="lg">{{ translate('Cost') }}</th>
                     </thead>
                     <tbody>
-                        @foreach ($transactions as $key_1 => $val)
-                            <?php $ff=$val->count();?>
-
-                            @foreach ($val as $key => $transaction)
-
-                                {{--                            @if($transaction->user != null)--}}
-                                <tr>
-                                    <td>{{$key+1}}</td>
-                                    <td >{{ $transaction->user->name }}</td>
-                                    @if($key == "0")
-                                    <td rowspan="{{$ff}}" >{{$transaction->representative->name}}</td>
-                                    @endif
-                                    <td>{{ $transaction->transaction_id}}</td>
-
-                                    @if ($transaction->type==1)
-                                    <td>
-                                        {{translate("Ownership")}}
-                                    </td>
-                                        <td>
-                                            {{$transaction->representative->transfer_price}}
-                                        </td>
-                                    @elseif($transaction->type==2)
-                                     <td>
-                                            {{translate("Renewal")}}
-                                    </td>
-                                        <td>
-                                            {{$transaction->representative->renewal_price}}
-                                        </td>
-                                    @elseif($transaction->type==3)
-                                        <td>
-                                            {{translate("Renewal")}}
-                                        </td>
-                                        <td>
-
-                                            {{$transaction->representative->renewal_price+$transaction->representative->transfer_price}}
-                                        </td>
-                                    @endif
-
-                                    <td >{{ date('Y-m-d H:i:s', strtotime($transaction->timedate)) }}</td>
-
-                                    @if ($loop->parent->first && $key == "0" )
-                                        <td rowspan="{{$transactions_count}}">{{$total_all}}</td>
-                                    @endif
-
-                                </tr>
-{{--                            @endif--}}
-                        @endforeach
-                        @endforeach
+                    <tr>
+                        <td>  {{translate("Ownership")}}</td>
+                        <td>  {{ $transaction_owner_count }}</td>
+                        <td>  {{ $transaction_owner_count * (int)$business_settings_ownership->value + 0.15*($transaction_owner_count * (int)$business_settings_ownership->value) }}</td>
+                    </tr>
+                    <tr>
+                        <td>  {{translate("Renewal")}}</td>
+                        <td>  {{ $transaction_renewal_count }}</td>
+                        <td>  {{ $transaction_renewal_count*(int)$business_settings_renewal->value +0.15*($transaction_renewal_count*(int)$business_settings_renewal->value ) }}</td>
+                    </tr>
 
                     </tbody>
                 </table>

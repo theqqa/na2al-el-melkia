@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Brand;
 use App\BrandTranslation;
 use App\Product;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ExpenseController extends Controller
@@ -36,6 +37,8 @@ class ExpenseController extends Controller
      */
     public function create()
     {
+        return view('backend.expense.create');
+
     }
 
     /**
@@ -46,8 +49,12 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $expense = new Expense();
         $expense->name = $request->name;
+        $expense->initial_balance = $request->initial_balance;
+        $expense->register_at = $request->register_at;
 
 
         $expense->save();
@@ -69,7 +76,8 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+        $expense  = Expense::findOrFail($id);
+        return view('backend.expense.show', compact('expense'));
     }
 
     /**
@@ -99,15 +107,16 @@ class ExpenseController extends Controller
         if($request->lang == env("DEFAULT_LANGUAGE")){
             $expense->name = $request->name;
         }
-
+        $expense->initial_balance = $request->initial_balance;
+        $expense->register_at = $request->register_at;
         $expense->save();
 
         $expense_translation = ExpenseTranslation::firstOrNew(['lang' => $request->lang, 'expense_id' => $expense->id]);
         $expense_translation->name = $request->name;
         $expense_translation->save();
 
-        flash(translate('Brand has been updated successfully'))->success();
-        return back();
+        flash(translate('Expense Item has been updated successfully'))->success();
+        return redirect()->route('expenses.index');
 
     }
 

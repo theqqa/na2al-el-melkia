@@ -26,8 +26,10 @@ use Illuminate\Support\Facades\App;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereExpenseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereApproved($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PermissionExchange whereUpdatedAt($value)
  * @mixin \Eloquent

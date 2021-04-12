@@ -14,6 +14,7 @@ use App\Order;
 use App\OrderDetail;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\EmailVerificationNotification;
+use Illuminate\Support\Facades\Validator;
 
 class RepresentativeController extends Controller
 {
@@ -58,12 +59,22 @@ class RepresentativeController extends Controller
      */
     public function store(Request $request)
     {
+        $data=$request->all();
 
+        Validator::make($data, [
+            'name' => 'required|unique:representatives|max:255',
+        ])->validate();
         $user = new Representative;
         $user->name = $request->name;
+
         $user->transfer_price = $request->transfer_price;
         $user->renewal_price =  $request->renewal_price;
-        $user->deserved_amount = $request->deserved_amount;
+        $user->deserved_amount = $request->initial_balance;
+        $user->email = $request->email;
+        $user->code = $request->code;
+        $user->initial_balance = $request->initial_balance;
+        $user->register_at = $request->register_at;
+
         if($user->save()){
 
                 flash(translate('Representative has been inserted successfully'))->success();
@@ -82,7 +93,9 @@ class RepresentativeController extends Controller
      */
     public function show($id)
     {
-        //
+        $representative = Representative::findOrFail(decrypt($id));
+        return view('backend.representatives.show', compact('representative'));
+
     }
 
     /**
@@ -106,17 +119,34 @@ class RepresentativeController extends Controller
      */
     public function update(Request $request, $id)
     {
+            $data=$request->all();
+
+            Validator::make($data, [
+                'name' => 'required|unique:representatives,name,'.$id,
+            ])->validate();
         $user = Representative::findOrFail($id);
-        $user->name = $request->name;
-        $user->transfer_price = $request->transfer_price;
-        $user->renewal_price =  $request->renewal_price;
-        $user->deserved_amount = $request->deserved_amount;
-        if($user->save()){
+        $rep_trans=Transaction::whereRepresentativeId($id)->count();
+        $rep_catch=CatchReceipt::whereRepresentativeId($id)->count();
+        if($rep_trans>0 or $rep_catch >0)
+        {
+            flash(translate('This representative have Related transactions or Catch Receipts . Can\'t deleted'))->error();
+            return redirect()->route('representatives.index');
+        }
+            $user->name = $request->name;
+            $user->transfer_price = $request->transfer_price;
+            $user->renewal_price = $request->renewal_price;
+            $user->deserved_amount = $request->initial_balance;
+
+            $user->email = $request->email;
+            $user->code = $request->code;
+            $user->initial_balance = $request->initial_balance;
+            $user->register_at = $request->register_at;
+            if ($user->save()) {
 
                 flash(translate('Representative has been updated successfully'))->success();
                 return redirect()->route('representatives.index');
 
-        }
+            }
 
         flash(translate('Something went wrong'))->error();
         return back();
@@ -138,9 +168,9 @@ class RepresentativeController extends Controller
 //        User::destroy($seller->user->id);
 $rep_trans=Transaction::whereRepresentativeId($id)->count();
 $rep_catch=CatchReceipt::whereRepresentativeId($id)->count();
-    if($rep_trans>0 or $rep_catch)
+    if($rep_trans>0 or $rep_catch >0)
     {
-        flash(translate('This representative have Related transactions. Can\'t deleted'))->error();
+        flash(translate('This representative have Related transactions or or Catch Receipts. Can\'t deleted'))->error();
         return back();
     }
         if(Representative::destroy($id)){

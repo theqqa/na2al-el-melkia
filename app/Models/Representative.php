@@ -11,10 +11,14 @@ use phpDocumentor\Reflection\Types\Integer;
  *
  * @property int $id
  * @property string $name
+ * @property string $code
  * @property string $transfer_price
-  * @property string $renewal_price
+ * @property string $email
+ * @property string $renewal_price
  * @property string $deserved_amount
+ * @property string $initial_balance
  * @property Integer $active
+ * @property \Illuminate\Support\Carbon $register_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Representative newModelQuery()

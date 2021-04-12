@@ -6,6 +6,7 @@ use App\Models\Representative;
 use App\Models\RepresentativeHistory;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\FlashDeal;
 use App\FlashDealTranslation;
@@ -97,7 +98,6 @@ class TransactionController extends Controller
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;
         $transaction->user_id = Auth::id();
-
         $transaction->timedate = Carbon::now();
         $transaction->type = $request->type;
         $transaction->notes = $request->notes;
@@ -189,6 +189,8 @@ if ($transaction->save()) {
           elseif($request->type==3){
               $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
           }
+          $representative_data->deserved_amount -= RepresentativeHistory::whereRepId($request->representative_id)->last()->deserved_amount_request;
+
           $treasury_balance_history= new  RepresentativeHistory();
           $treasury_balance_history->rep_id= $request->representative_id;
           $treasury_balance_history->transaction_id= $transaction->id;

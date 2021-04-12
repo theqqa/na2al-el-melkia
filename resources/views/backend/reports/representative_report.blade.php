@@ -41,44 +41,109 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-header row ">
                     @if(!empty($rep_id) && $rep_id != null)
-                      <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
-                      <span class="btn-soft-success aiz-side-nav-text">{{__('Transfer Price Service')}} :{{$rep->transfer_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-info aiz-side-nav-text">{{__('Renewal Price Service')}} :{{$rep->renewal_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-danger aiz-side-nav-text">{{__('Deserved Amount')}} :{{$rep->deserved_amount }} <span class="small">ريال</span></span>
 
-                        @endif
+                    <div class="card-header row ">
+                      <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
+                      <span class="btn-soft-success aiz-side-nav-text">{{translate('Representative Name')}} :{{$rep->name }} <span class="small">ريال</span></span>
+                          <span class="btn-soft-info aiz-side-nav-text">{{translate('Representative Code')}} :{{$rep->code }} <span class="small">ريال</span></span>
+
+
 </div>
+
+                        <br>
+                            <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
+                            <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Code')}} : {{ $rep->code }}</h5>
+                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Name')}} : {{ $rep->name }}</h5>
+                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Initial Balance')}} : {{ $rep->initial_balance }} <span class="small">ريال</span></h5>
+                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Required Balance')}} : {{ $rep->deserved_amount }} <span class="small">ريال</span></h5>
+                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Paid Balance')}} : {{ $paid_hist }} <span class="small">ريال</span></h5>
+
+<br>
+                        @endif
+
 </form>
 
 <table class="table table-bordered  mb-0">
 <thead>
   <tr>
     <th>#</th>
+      <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
       <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
       <th>{{translate('Service Type')}}</th>
-      <th data-breakpoints="lg">{{ translate('Price Before') }}</th>
-      <th data-breakpoints="lg">{{ translate('Price Request') }}</th>
+      <th>{{translate('Transactions Id').'/'.translate('Code Catch receipts')}}</th>
+{{--      <th data-breakpoints="lg">{{ translate('Price Before') }}</th>--}}
+      <th data-breakpoints="lg">{{ translate('Price') }}</th>
       <th data-breakpoints="lg">{{ translate('Price After') }}</th>
-      <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
 </thead>
 <tbody>
   @foreach ($rep_hists as $key => $val)
+
           <tr>
               <td>{{$key+1}}</td>
+              <td>{{ $val->created_at }}</td>
+
               <td >{{ $val->representative->name }}</td>
               @if(!empty($val->catch_receipt_id))
               <td>
-                  <a href="{{route('catch_receipts.edit',$val->catchReceipt->id )}}">{{__('Catch Receipt')}}</a></td>
+                  <a href="{{route('catch_receipts.edit',$val->catchReceipt->id )}}">{{translate('Catch Receipt')}}</a></td>
               @elseif(!empty($val->transaction_id))
-              <td><a href="{{route('transactions.index')}}">{{__('Transaction')}}</a></td>
+                  @if ($val->transaction->type==1)
+
+                      <td><a href="{{route('transactions.index')}}">{{translate('Ownership')}}</a></td>
+
+                  @elseif($val->transaction->type==2)
+
+                      <td><a href="{{route('transactions.index')}}">{{translate('Renewal')}}</a></td>
+
+                  @elseif($val->transaction->type==3)
+
+              <td><a href="{{route('transactions.index')}}">{{translate('Both')}}</a></td>
+                  @endif
+
               @endif
-              <td>{{ $val->deserved_amount_before}}</td>
-              <td>{{ $val->deserved_amount_request}}</td>
+              @if(!empty($val->catch_receipt_id))
+              <td>{{$val->catchReceipt->code}}</td>
+              @elseif(!empty($val->transaction_id))
+                  <td>{{$val->transaction->transaction_id}}</td>
+              @endif
+{{--              <td>{{ $val->deserved_amount_before}}</td>--}}
+              @if(!empty($val->catch_receipt_id))
+              <td style="color: red">{{ '- ' .$val->deserved_amount_request}}</td>
+              @elseif(!empty($val->transaction_id))
+                  <td>{{ $val->deserved_amount_request}}</td>
+
+              @endif
+
               <td>{{ $val->deserved_amount_after}}</td>
-              <td>{{ $val->created_at }}</td>
           </tr>
+          @if($loop->last)
+              <tr style="font-weight: bold">
+                  <td colspan="5">{{translate('Ownership Count')}}</td>
+                  <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small">ريال</span> </td>
+
+              </tr>
+              <tr style="font-weight: bold">
+                  <td colspan="5">{{translate('Renewal Count')}}</td>
+                  <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small">ريال</span> </td>
+
+              </tr>
+              <tr style="font-weight: bold">
+                  <td colspan="5">{{translate('Total2')}}</td>
+                  <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small">ريال</span> </td>
+
+              </tr>
+              <tr style="font-weight: bold">
+                  <td colspan="5">{{translate('Tax')}}</td>
+                  <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small">15%</span> </td>
+
+              </tr>
+              <tr style="font-weight: bold">
+                  <td colspan="5">{{translate('Total')}}</td>
+                  <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small">ريال</span> </td>
+
+              </tr>
+          @endif
   @endforeach
 
 </tbody>

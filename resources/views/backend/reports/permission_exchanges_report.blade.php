@@ -55,6 +55,7 @@
 
         <th data-breakpoints="lg">{{ translate('Approved') }}</th>
         <th data-breakpoints="lg">{{ translate('Confirm Exchange') }}</th>
+        <th data-breakpoints="lg">{{ translate('Nots') }}</th>
 
     </tr>
     </thead>
@@ -85,8 +86,15 @@
 
                 @endif
             </td>
-
+<td>{{$permission_exchange->description}} </td>
         </tr>
+        @if($loop->last)
+            <tr style="font-weight: bold">>
+                <td colspan="2">{{translate('Total2')}}</td>
+                <td colspan="6" class="btn-soft-success aiz-side-nav-text">{{$total_price}} <span class="small">ريال</span> </td>
+
+            </tr>
+        @endif
     @endforeach
     </tbody>
 </table>

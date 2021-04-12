@@ -42,83 +42,87 @@
                         </div>
                     </div>
                 </form>
+                <div class="card-header row ">
 
+                        <span class="btn-soft-success aiz-side-nav-text">{{translate('Initial Treasury Balance')}} :{{$initial_treasury_balance }} <span class="small">ريال</span></span>
+                    <span class="btn-soft-info aiz-side-nav-text">{{translate('Previse Balance')}} :{{$total_pre }} <span class="small">ريال</span></span>
+
+                </div>
                 <table class="table table-bordered  mb-0">
                     <thead>
                         <tr>
+                            <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
+
                             <th>{{ translate('User Name') }}</th>
                             <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
                             <th>{{translate('Transactions Id')}}</th>
                             <th data-breakpoints="lg">{{ translate('Type') }}</th>
                             <th data-breakpoints="lg">{{ translate('Price') }}</th>
 
-                            <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Total') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Total Income') }}</th>
+                            <th data-breakpoints="lg" >{{ translate('Total') }}</th>
                     </thead>
                     <tbody>
-                        @foreach ($transactions as $key_1 => $val)
-                            <?php $ff=$val->count();
 
-                            $total=0;?>
+                            @foreach ($transactions as $key => $transaction)
 
-                            @foreach ($val as $key => $transaction)
-
-                                {{--                            @if($transaction->user != null)--}}
                                 <tr>
+                                    <td >{{ date('Y-m-d H:i:s', strtotime($transaction->timedate)) }}</td>
 
                                     <td >{{ $transaction->user->name }}</td>
-                                    @if($key == "0")
-                                    <td rowspan="{{$ff}}" >{{$transaction->representative->name}}</td>
-                                    @endif
+                                    <td >{{$transaction->representative->name}}</td>
                                     <td>{{ $transaction->transaction_id}}</td>
 
                                     @if ($transaction->type==1)
                                     <td>
-                                        {{__("Ownership")}}
+                                        {{translate("Ownership")}}
                                     </td>
                                         <td>
-                                            <?php $total+=$transaction->representative->transfer_price ;?>
                                             {{$transaction->representative->transfer_price}}
                                         </td>
                                     @elseif($transaction->type==2)
                                      <td>
-                                            {{__("Renewal")}}
+                                            {{translate("Renewal")}}
                                     </td>
                                         <td>
-                                            <?php $total+=$transaction->representative->renewal_price ;?>
                                             {{$transaction->representative->renewal_price}}
                                         </td>
                                     @elseif($transaction->type==3)
                                         <td>
-                                            {{__("Renewal")}}
+                                            {{translate("Both")}}
                                         </td>
                                         <td>
-                                            <?php $total+=$transaction->representative->renewal_price+$transaction->representative->transfer_price ;?>
 
                                             {{$transaction->representative->renewal_price+$transaction->representative->transfer_price}}
                                         </td>
                                     @endif
 
-                                    <td >{{ date('Y-m-d H:i:s', strtotime($transaction->timedate)) }}</td>
-                                    @if($key == "0" )
-                                        <td rowspan="{{$ff}}">{{$total_1[$key_1]}}</td>
-                                    @endif
-                                    @if ($loop->parent->first && $key == "0" )
-                                        <td rowspan="{{$transactions_count}}">{{$total_all}}</td>
-                                    @endif
+{{--                                    @if($key == "0" )--}}
+                                        <td >{{$sum[$key]}}</td>
+{{--                                    @endif--}}
+{{--                                    @if ($loop->parent->first && $key == "0" )--}}
+{{--                                        <td rowspan="{{$transactions_count}}">{{$total_all}}</td>--}}
+{{--                                    @endif--}}
 
 
                                 </tr>
+                                @if($loop->last)
+                                    <tr style="font-weight: bold">
+                                        <td colspan="5">{{translate('Total2')}}</td>
+                                        <td colspan="2" class="btn-soft-success aiz-side-nav-text">{{$total_all}} <span class="small">ريال</span> </td>
+
+                                    </tr>
+                                @endif
 {{--                            @endif--}}
                         @endforeach
-                        @endforeach
+{{--                        @endforeach--}}
 
                     </tbody>
                 </table>
-{{--                <div class="aiz-pagination mt-4">--}}
-{{--                    {{ $transactions->links() }}--}}
-{{--                </div>--}}
+                <div class="aiz-pagination mt-4">
+                    <h6 class="mb-md-0 h6">{{translate("Ownership Count")}}:<span class="btn btn-icon btn-circle  btn-soft-danger"> {{$count_owner}}</span></h6>
+                    <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn btn-icon btn-circle  btn-soft-danger"> {{$count_renewal}}</span></h6>
+
+                </div>
             </div>
         </div>
     </div>

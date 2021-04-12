@@ -32,7 +32,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group mb-0">
-                                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
+                                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range" autocomplete="off" @isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -44,9 +44,9 @@
                     <div class="card-header row ">
                     @if(!empty($rep_id) && $rep_id != null)
                       <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
-                      <span class="btn-soft-success aiz-side-nav-text">{{__('Transfer Price Service')}} :{{$rep->transfer_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-info aiz-side-nav-text">{{__('Renewal Price Service')}} :{{$rep->renewal_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-danger aiz-side-nav-text">{{__('Deserved Amount')}} :{{$rep->deserved_amount }} <span class="small">ريال</span></span>
+                      <span class="btn-soft-success aiz-side-nav-text">{{translate('Transfer Price Service')}} :{{$rep->transfer_price }} <span class="small">ريال</span></span>
+                          <span class="btn-soft-info aiz-side-nav-text">{{translate('Renewal Price Service')}} :{{$rep->renewal_price }} <span class="small">ريال</span></span>
+                          <span class="btn-soft-danger aiz-side-nav-text">{{translate('Deserved Amount')}} :{{$rep->deserved_amount }} <span class="small">ريال</span></span>
 
                         @endif
 </div>
@@ -69,9 +69,18 @@
             <td>{{ date('Y-m-d', strtotime($catch_receipt->date)) }}</td>
             <td>{{ $catch_receipt->representative->name }}</td>
             <td>{{ $catch_receipt->price}}</td>
-            <td>{{ $catch_receipt->payment_by}}</td>
+            <td>{{ ($catch_receipt->payment_by==1)?translate('Cache') :translate('Bank transfer') }}</td>
 
         </tr>
+{{--        @if(!empty($rep_id) && $rep_id != null)--}}
+        @if($loop->last)
+            <tr style="font-weight: bold">>
+                <td colspan="3">{{translate('Total2')}}</td>
+                <td colspan="2" class="btn-soft-success aiz-side-nav-text">{{$total_price}} <span class="small">ريال</span> </td>
+
+            </tr>
+            @endif
+{{--        @endif--}}
     @endforeach
     </tbody>
 </table>

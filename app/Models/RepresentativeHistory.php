@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\Types\Integer;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory whereRepId()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RepresentativeHistory whereUpdatedAt($value)
  * @mixin \Eloquent

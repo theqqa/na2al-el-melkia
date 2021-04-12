@@ -207,7 +207,7 @@
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('representatives.index') }}" class="aiz-side-nav-link">
+                                <a href="{{ route('representatives.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['representatives.index', 'representatives.create', 'representatives.edit'])}}">
 
                                     <span class="aiz-side-nav-text">{{ translate('Representative list') }}</span>
                                 </a>
@@ -230,7 +230,7 @@
                 @if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
 
                 <li class="aiz-side-nav-item">
-                    <a href="{{route('expenses.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['brands.index', 'brands.create', 'brands.edit'])}}" >
+                    <a href="{{route('expenses.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['expenses.index', 'expenses.create', 'expenses.show','expenses.edit'])}}" >
                         <i class="las la-money-bill-wave aiz-side-nav-icon"></i>
 
                         <span class="aiz-side-nav-text">{{translate('Expense items')}}</span>
@@ -253,7 +253,7 @@
                         <a href="{{ route('business_settings.treasury_balance') }}" class="aiz-side-nav-link {{ areActiveRoutes(['business_settings.treasury_balance'])}}">
                             <i class="las la-balance-scale aiz-side-nav-icon"></i>
 
-                            <span class="aiz-side-nav-text">{{ translate('Treasury Balance') }}</span>
+                            <span class="aiz-side-nav-text">{{ translate('Initial Treasury Balance') }}</span>
                         </a>
                     </li>
                 @endif

@@ -42,8 +42,11 @@
             <tr>
                 <th data-breakpoints="lg">#</th>
                 <th>{{translate('Name')}}</th>
+                <th>{{translate('Code')}}</th>
+
                 <th data-breakpoints="lg">{{translate('Transfer Price')}}</th>
                 <th data-breakpoints="lg">{{translate('Renewal Price')}}</th>
+                <th data-breakpoints="lg">{{translate('Initial Balance')}}</th>
                 <th data-breakpoints="lg">{{translate('Deserved Amount')}}</th>
                 <th data-breakpoints="lg">{{translate('Approval')}}</th>>
                 <th width="10%">{{translate('Options')}}</th>
@@ -54,9 +57,11 @@
                     <tr>
                         <td>{{ ($key+1) + ($representatives->currentPage() - 1)*$representatives->perPage() }}</td>
                         <td>{{$val->name}}</td>
+                        <td>{{$val->code}}</td>
 
                         <td>{{single_price($val->transfer_price)}}</td>
                         <td>{{single_price($val->renewal_price)}}</td>
+                        <td>{{single_price($val->initial_balance)}}</td>
                         <td>{{single_price($val->deserved_amount)}}
                         </td>
                         <td>
@@ -65,22 +70,18 @@
                                 <span class="slider round"></span>
                             </label>
                         </td>
-
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm btn-circle btn-soft-primary btn-icon dropdown-toggle no-arrow" data-toggle="dropdown" href="javascript:void(0);" role="button" aria-haspopup="false" aria-expanded="false">
-                                  <i class="las la-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs">
-                                    <a href="{{route('representatives.edit', encrypt($val->id))}}" class="dropdown-item">
-                                      {{translate('Edit')}}
-                                    </a>
-                                    <a href="#" class="dropdown-item confirm-delete" data-href="{{route('representatives.destroy', $val->id)}}" class="">
-                                      {{translate('Delete')}}
-                                    </a>
-                                </div>
-                            </div>
+                        <td class="text-right">
+                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('representatives.show', encrypt($val->id))}}" title="{{ translate('show') }}">
+                                <i class="las la-eye"></i>
+                            </a>
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('representatives.edit', encrypt($val->id))}}" title="{{ translate('Edit') }}">
+                                <i class="las la-edit"></i>
+                            </a>
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('representatives.destroy', $val->id)}}" title="{{ translate('Delete') }}">
+                                <i class="las la-trash"></i>
+                            </a>
                         </td>
+
                     </tr>
 
             @endforeach

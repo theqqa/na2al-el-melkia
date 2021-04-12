@@ -36,7 +36,10 @@
                     <div class="form-group row">
                         <label class="col-sm-3 control-label" for="name">{{translate('Expense By')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Expense By')}}" id="expense_by" name="expense_by" class="form-control" required>
+                            <select class="form-control aiz-selectpicker" name="expense_by" id="expense_by" data-live-search="true" required>
+                                <option value="1">{{ translate('cache')}}</option>
+                                <option value="2">{{ translate('Bank transfer')}}</option>
+                            </select>
                         </div>
                     </div>
 

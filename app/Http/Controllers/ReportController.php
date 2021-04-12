@@ -26,8 +26,10 @@ class ReportController extends Controller
     {
         $user_id =null;
         $date_range=null;
+        $pre_transactions=[];
         $users = Staff::whereRoleId('3')->get();
-
+        $business_settings = BusinessSetting::where('type', 'initial_treasury_balance')->first();
+$initial_treasury_balance=$business_settings->value;
         $transactions = Transaction::orderBy('created_at', 'desc');
         if ($request->has('user_id') && $request->user_id != "null"){
             $user_id = $request->user_id;
@@ -36,44 +38,79 @@ class ReportController extends Controller
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
+            $pre_transactions=Transaction::whereDate('timedate', '<', $date_range1[0])->get();
             $transactions = $transactions->whereDate('timedate', '>=', $date_range1[0]);
             $transactions = $transactions->whereDate('timedate', '<=', $date_range1[1]);
         }
         $transactions = $transactions->get();
         $transactions_count=$transactions->count();
-        $transactions = $transactions->groupBy('representative_id');
+//        $transactions = $transactions->groupBy('representative_id');
 
         $total_all=0;
-     foreach ($transactions as $key_1 => $val)
-        {
-            $total_1[$key_1]=0;
-            foreach ($val as $key_2 => $transaction){
+      ;
+//     foreach ($transactions as $key_1 => $val)
+//        {
+            $total_1[]=0;
+        $sum[]=0;
+        $count_owner=0;
+        $count_renewal=0;
+        $total_pre=0;
+        foreach ($pre_transactions as $key_pre => $val_pre){
+            if ($val_pre->type==1){
+                $total_pre +=$val_pre->representative->transfer_price ;
+            }
+            elseif($val_pre->type==2){
+                $total_pre+=$val_pre->representative->renewal_price ;
+
+
+            }elseif($val_pre->type==3){
+
+                $total_pre +=$val_pre->representative->renewal_price+$val_pre->representative->transfer_price ;
+            }
+        }
+
+        foreach ($transactions as $key => $transaction){
                 if ($transaction->type==1){
-                    $total_1[$key_1]+=$transaction->representative->transfer_price ;
+                    $count_owner+=1;
+                    $total_1[$key]=$transaction->representative->transfer_price ;
                     $total_all+=$transaction->representative->transfer_price ;
                 }
                 elseif($transaction->type==2){
-                    $total_1[$key_1]+=$transaction->representative->renewal_price ;
+                    $count_renewal+=1;
+
+                    $total_1[$key] =$transaction->representative->renewal_price ;
                     $total_all+=$transaction->representative->renewal_price ;
 
                 }elseif($transaction->type==3){
-                    $total_1[$key_1]+=$transaction->representative->renewal_price+$transaction->representative->transfer_price ;
+                    $count_renewal+=1;
+                    $count_owner+=1;
+
+                    $total_1[$key] =$transaction->representative->renewal_price+$transaction->representative->transfer_price ;
                     $total_all+=$transaction->representative->renewal_price+$transaction->representative->transfer_price ;
                 }
         }
-        }
-        return view('backend.reports.users_transactions_report', compact('transactions','user_id','date_range','users','total_1','total_all','transactions_count'));
+foreach ($total_1 as $key_1=>$value){
+    if($key_1 !=0)
+    $sum[$key_1] =$sum[$key_1-1]+$value;
+    else
+        $sum[$key_1]=$value;
+}
+
+        return view('backend.reports.users_transactions_report', compact('total_pre','initial_treasury_balance','count_renewal','count_owner','transactions','sum','user_id','date_range','users','total_1','total_all','transactions_count'));
     }
     public function users_representative_report(Request $request)
     {
         $rep_id =null;
         $rep=Representative::all();
                 $date_range=null;
-
-        $rep_hists = RepresentativeHistory::orderBy('created_at', 'desc');
+        $paid_hist=0;
+        $rep_hists = RepresentativeHistory::orderBy('created_at', 'asc');
         if ($request->has('rep_id') && $request->rep_id != "null"){
             $rep_id = $request->rep_id;
             $rep_hists = $rep_hists->where('rep_id', $rep_id);
+            $paid_hist= RepresentativeHistory::where('rep_id', $rep_id)->whereNotNull('catch_receipt_id')->sum('deserved_amount_request');
+            $trans_rep= RepresentativeHistory::where('rep_id', $rep_id)->whereNotNull('transaction_id');
+
         }
         if ($request->date_range) {
             $date_range = $request->date_range;
@@ -82,14 +119,16 @@ class ReportController extends Controller
             $rep_hists = $rep_hists->whereDate('created_at', '<=', $date_range1[1]);
         }
         $rep_hists = $rep_hists->paginate(15);
-        return view('backend.reports.representative_report', compact('rep_hists','rep_id','date_range','rep'));
+
+
+        return view('backend.reports.representative_report', compact('paid_hist','rep_hists','rep_id','date_range','rep'));
     }
 
     public function catch_receipts_report(Request $request)
     {
         $rep_id =null;
          $date_range=null;
-
+        $total_price=0;
         $rep=Representative::all();
         $catch_receipts = CatchReceipt::orderBy('created_at', 'desc');
         if ($request->has('rep_id') && $request->rep_id != "null"){
@@ -102,8 +141,16 @@ class ReportController extends Controller
             $catch_receipts = $catch_receipts->whereDate('date', '>=', $date_range1[0]);
             $catch_receipts = $catch_receipts->whereDate('date', '<=', $date_range1[1]);
         }
-        $catch_receipts = $catch_receipts->paginate(15);
-        return view('backend.reports.catch_receipts_report', compact('catch_receipts','rep_id','date_range','rep'));
+        if ($request->has('rep_id') && $request->rep_id != "null") {
+          $total_price = $catch_receipts->sum('price');
+        }else{
+            $total_price = $catch_receipts->sum('price');
+
+
+        }
+
+            $catch_receipts = $catch_receipts->paginate(15);
+        return view('backend.reports.catch_receipts_report', compact('total_price','catch_receipts','rep_id','date_range','rep'));
     }
     public function permission_exchanges_report(Request $request)
     {
@@ -123,8 +170,10 @@ class ReportController extends Controller
             $permission_exchanges = $permission_exchanges->whereDate('date', '>=', $date_range1[0]);
             $permission_exchanges = $permission_exchanges->whereDate('date', '<=', $date_range1[1]);
         }
+        $total_price = $permission_exchanges->sum('price');
+
         $permission_exchanges = $permission_exchanges->paginate(15);
-        return view('backend.reports.permission_exchanges_report', compact('permission_exchanges','expense_id','date_range','expense'));
+        return view('backend.reports.permission_exchanges_report', compact('permission_exchanges','total_price','expense_id','date_range','expense'));
     }
     public function treasury_balance_report(Request $request)
     {
@@ -145,45 +194,53 @@ class ReportController extends Controller
     public function users_taam_report(Request $request)
     {
         $user_id =null;
-        $date_range=null;
-                        $date_range=null;
+          $date_range=null;
 
         $users = Staff::whereRoleId('3')->get();
-
         $business_settings_renewal = BusinessSetting::where('type', 'taam_expenses_renewal')->first();
         $business_settings_ownership = BusinessSetting::where('type', 'taam_expenses_ownership')->first();
 
-        $transactions = Transaction::orderBy('created_at', 'desc');
-        if ($request->has('user_id') && $request->user_id != "null"){
-            $user_id = $request->user_id;
-            $transactions = $transactions->where('user_id', $user_id);
-        }
+//        $transactions = Transaction::orderBy('created_at', 'desc');
+        $transaction_owner_count= Transaction::where('type',1)
+            ->orWhere('type', 3)->count();
+
+        $transaction_renewal_count= Transaction::where('type',2)
+            ->orWhere('type', 3)->count();
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
-            $transactions = $transactions->whereDate('timedate', '>=', $date_range1[0]);
-            $transactions = $transactions->whereDate('timedate', '<=', $date_range1[1]);
-        }
-        $transactions = $transactions->get();
-        $transactions_count=$transactions->count();
-        $transactions = $transactions->groupBy('representative_id');
+//            $transactions = $transactions->whereDate('timedate', '>=', $date_range1[0]);
+//            $transactions = $transactions->whereDate('timedate', '<=', $date_range1[1]);
+            $transaction_owner_count= Transaction::whereDate('timedate', '>=', $date_range1[0])->whereDate('timedate', '<=', $date_range1[1])->where('type',1)
+                ->orWhere('type', 3)->count();
 
-        $total_all=0;
-        foreach ($transactions as $key_1 => $val)
-        {
-            foreach ($val as $key_2 => $transaction){
-                if ($transaction->type==1){
-                    $total_all+=$business_settings_ownership->value;
-                }
-                elseif($transaction->type==2){
-                    $total_all+=$business_settings_renewal->value ;
-
-                }elseif($transaction->type==3){
-                    $total_all+=$business_settings_renewal->value +$business_settings_ownership->value ;
-                }
-            }
+            $transaction_renewal_count= Transaction::whereDate('timedate', '>=', $date_range1[0])->whereDate('timedate', '<=', $date_range1[1])->where('type',2)
+                ->orWhere('type', 3)->count();
         }
-        return view('backend.reports.users_taam_report', compact('transactions','business_settings_renewal','business_settings_ownership','user_id','date_range','users','total_all','transactions_count'));
+
+//        $transactions = $transactions->get();
+
+//        $transactions = $transactions->where;
+
+        $total_ownership=0;
+        $total_renewal=0;
+//        foreach ($transactions as $key_1 => $val)
+//        {
+//            foreach ($transactions as $key_2 => $transaction){
+//                if ($transaction->type==1){
+//                    $total_ownership=$business_settings_ownership->value;
+//                }
+//                elseif($transaction->type==2){
+//                    $total_renewal+=$business_settings_renewal->value ;
+//
+//                }elseif($transaction->type==3){
+//                    $total_ownership += $business_settings_ownership->value ;
+//                    $total_renewal += $business_settings_renewal->value ;
+//
+//                }
+//            }
+//        }
+        return view('backend.reports.users_taam_report', compact('date_range','users','business_settings_renewal','business_settings_ownership','user_id','total_renewal','total_ownership','transaction_renewal_count','transaction_owner_count'));
     }
     public function stock_report(Request $request)
     {

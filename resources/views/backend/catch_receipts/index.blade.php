@@ -7,11 +7,13 @@
 		<div class="col-md-6">
 			<h1 class="h3">{{translate('All Catch Receipts')}}</h1>
 		</div>
+        @if(Auth::user()->user_type != 'admin')
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('catch_receipts.create') }}" class="btn btn-circle btn-info">
 				<span>{{translate('Create New Catch Receipt')}}</span>
 			</a>
 		</div>
+            @endif
 	</div>
 </div>
 
@@ -42,6 +44,7 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
+                    <th>{{translate('Code')}}</th>
                     <th>{{translate('Date')}}</th>
                     <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
                     <th data-breakpoints="lg">{{ translate('Price') }}</th>
@@ -53,10 +56,12 @@
                 @foreach($catch_receipts as $key => $catch_receipt)
                     <tr>
                         <td>{{ ($key+1) + ($catch_receipts->currentPage() - 1)*$catch_receipts->perPage() }}</td>
+                        <td>{{ $catch_receipt->code}}</td>
+
                         <td>{{ date('Y-m-d', strtotime($catch_receipt->date)) }}</td>
                         <td>{{ $catch_receipt->representative->name }}</td>
                         <td>{{ $catch_receipt->price}}</td>
-                        <td>{{ $catch_receipt->payment_by}}</td>
+                        <td>{{ ($catch_receipt->payment_by==1)?translate('Cache') :translate('Bank transfer') }}</td>
 
 						<td class="text-right">
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit',$catch_receipt->id )}}" title="{{ translate('Edit') }}">

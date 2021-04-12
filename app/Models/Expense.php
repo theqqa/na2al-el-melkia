@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\App;
  *
  * @property int $id
  * @property string $name
+ * @property string $initial_balance
+
+ * @property \Illuminate\Support\Carbon $register_at
 
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at

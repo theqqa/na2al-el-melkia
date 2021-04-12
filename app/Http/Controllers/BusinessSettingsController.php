@@ -77,18 +77,23 @@ class BusinessSettingsController extends Controller
         return view('backend.taam_expenses.index', compact('business_settings_renewal','business_settings_ownership'));
     }
 
-    public function taam_expenses_update(Request $request){
+    public function taam_expenses_update(Request $request)
+    {
         $business_settings = BusinessSetting::where('type', $request->type)->first();
-        $business_settings->type = $request->type;
-        $business_settings->value = $request->value;
+        if ($business_settings->value != $request->value){
+            $business_settings->type = $request->type;
+        $business_settings->value = $request->value ;
         $business_settings->save();
 
         flash(translate('Taam Expenses updated successfully'))->success();
+    }
+        flash(translate('Taam Expenses updated successfully'))->success();
+
         return back();
     }
     public function treasury_balance(Request $request)
     {
-        $business_settings = BusinessSetting::where('type', 'treasury_balance')->first();
+        $business_settings = BusinessSetting::where('type', 'initial_treasury_balance')->first();
         return view('backend.treasury_balance.index', compact('business_settings'));
     }
 

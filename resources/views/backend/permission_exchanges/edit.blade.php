@@ -40,7 +40,10 @@
                   <div class="form-group row">
                       <label class="col-sm-3 control-label" for="name">{{translate('Expense By')}}</label>
                       <div class="col-sm-9">
-                          <input type="text" placeholder="{{translate('Expense By')}}" id="expense_by" value="{{$permission_exchange->expense_by}}" name="expense_by" class="form-control" required>
+                          <select class="form-control aiz-selectpicker" name="payment_by" id="payment_by" data-live-search="true" required>
+                              <option value="1" @if($permission_exchange->expense_by ==1 ) selected @endif>{{ translate('cache')}}</option>
+                              <option value="2"  @if($permission_exchange->expense_by ==2 ) selected @endif>{{ translate('Bank transfer')}}</option>
+                          </select>
                       </div>
                   </div>
 

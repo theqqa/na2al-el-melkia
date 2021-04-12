@@ -8,13 +8,15 @@
 			<h1 class="h3">{{translate('All Transactions')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
-			<a href="{{ route('transaction.uploaded_file') }}" class="btn btn-circle btn-danger ">
-				<span>{{translate('Upload files for Transaction')}}</span>
+            @if(Auth::user()->user_type != 'admin' )
 
+            <a href="{{ route('transaction.uploaded_file') }}" class="btn btn-circle btn-danger ">
+				<span>{{translate('Upload files for Transaction')}}</span>
+            </a>
                 <a href="{{ route('transactions.create') }}" class="btn btn-circle  btn-info">
                     <span>{{translate('Create New Transaction')}}</span>
                 </a>
-			</a>
+            @endif
 		</div>
 	</div>
 </div>
@@ -54,11 +56,11 @@
                         <td>{{\App\Models\Representative::find($transaction->representative_id)->name}}</td>
                         <td>
                             @if ($transaction->type==1)
-                                {{__("Ownership")}}
+                                {{translate("Ownership")}}
                             @elseif($transaction->type==2)
-                                {{__("Renewal")}}
+                                {{translate("Renewal")}}
                             @elseif($transaction->type==3)
-                                {{__("Both")}}
+                                {{translate("Both")}}
                             @endif
                         </td>
                         <td>{{ date('Y-m-d H:i:s', strtotime($transaction->timedate)) }}</td>

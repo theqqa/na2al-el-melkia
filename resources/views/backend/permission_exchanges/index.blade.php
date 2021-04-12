@@ -7,11 +7,14 @@
 		<div class="col-md-6">
 			<h1 class="h3">{{translate('All Permission Exchanges')}}</h1>
 		</div>
-		<div class="col-md-6 text-md-right">
+        @if(Auth::user()->user_type != 'admin')
+
+        <div class="col-md-6 text-md-right">
 			<a href="{{ route('permission_exchanges.create') }}" class="btn btn-circle btn-info">
 				<span>{{translate('Create New Permission Exchange')}}</span>
 			</a>
 		</div>
+        @endif
 	</div>
 </div>
 
@@ -71,7 +74,7 @@
                         <td>{{ $permission_exchange->expense->name }}</td>
 
 
-                        <td>{{ $permission_exchange->expense_by}}</td>
+                        <td>{{ $permission_exchange->expense_by==1?translate('Cache'):translate('Bank transfer')}}</td>
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input @if(auth()->user()->user_type == 'admin' && $permission_exchange->status == 0) onchange="update_approved(this)" @else disabled  @endif value="{{ $permission_exchange->id }}" type="checkbox" <?php if($permission_exchange->approved == 1) echo "checked";?> >
