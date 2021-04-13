@@ -86,6 +86,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/treasury_balance_report', 'ReportController@treasury_balance_report')->name('treasury_balance_report.index');
     Route::get('/users_taam_report', 'ReportController@users_taam_report')->name('users_taam_report.index');
 
+    Route::post('/send_mail', 'ReportController@send_mail_representative')->name('send_mail_representative');
+
 
     Route::resource('customers', 'CustomerController');
     Route::get('customers_ban/{customer}', 'CustomerController@ban')->name('customers.ban');

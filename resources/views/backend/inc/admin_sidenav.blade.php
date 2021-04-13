@@ -1,4 +1,4 @@
-<div class="aiz-sidebar-wrap">
+<div class="aiz-sidebar-wrap" id="sidenav">
     <div class="aiz-sidebar left c-scrollbar">
         <div class="aiz-side-nav-logo-wrap">
             <a href="{{ route('admin.dashboard') }}" class="d-block text-left">

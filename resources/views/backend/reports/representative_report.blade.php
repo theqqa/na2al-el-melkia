@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row" id="divName">
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-body">
@@ -184,9 +184,47 @@ $codes=[];
 {{--                <div class="aiz-pagination mt-4">--}}
 {{--                    {{ $rep_hists->links() }}--}}
 {{--                </div>--}}
-</div>
+                <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
+                @if(!empty($rep_id ) )
+                <button class="btn btn-md btn-info "  onClick="sendDiv({{$rep_id}});" id="print_id">   <span  class=" las la-paper-plane"> {{ translate('send') }}</span> </button>
+
+@endif
+            </div>
 </div>
 </div>
 </div>
 
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+
+            document.body.innerHTML = originalContents;
+        }
+        function sendDiv($rep) {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            $content = printContents;
+
+           console.log($content);
+            $.post('{{ route('send_mail_representative') }}', {_token: AIZ.data.csrf, content_page:$content ,rep_id:$rep}, function(data){
+
+            });
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 @endsection

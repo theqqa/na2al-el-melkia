@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BusinessSetting;
+use App\Mail\EmailManager;
 use App\Models\CatchReceipt;
 use App\Models\Expense;
 use App\Models\PermissionExchange;
@@ -19,6 +20,7 @@ use App\Seller;
 use App\User;
 use App\Search;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReportController extends Controller
 {
@@ -359,4 +361,28 @@ foreach ($total_1 as $key_1=>$value){
         }
         return view('backend.reports.commission_history_report', compact('commission_history', 'seller_id', 'date_range'));
     }
+
+    public function send_mail_representative(Request $request)
+    {
+
+
+        if (env('MAIL_USERNAME') != null) {
+            //sends newsletter to selected users
+            $email=Representative::find($request->rep_id)->email;
+                    $array['view'] = 'emails.newsletter';
+                    $array['subject'] = 'report';
+                    $array['from'] = env('MAIL_USERNAME');
+                    $array['content'] = $request->content_page;
+
+                    try {
+                        Mail::to($email)->queue(new EmailManager($array));
+                        return 1;
+                    } catch (\Exception $e) {
+                        return 0;
+
+                    }
+
+        }
+    }
+
 }
