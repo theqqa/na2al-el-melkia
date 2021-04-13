@@ -102,7 +102,7 @@ class BusinessSettingsController extends Controller
         $business_settings->type = $request->type;
         $business_settings->value = $request->value;
         $business_settings->save();
-
+//        $business_settings_balance = BusinessSetting::where('type', treasury_balance)->first();
         flash(translate('Treasury Balance updated successfully'))->success();
         return back();
     }

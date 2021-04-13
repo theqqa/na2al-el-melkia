@@ -386,7 +386,7 @@
 </li>
 <li class="aiz-side-nav-item">
   <a href="{{ route('treasury_balance_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['treasury_balance_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('Treasury Balance') }}</span>
+      <span class="aiz-side-nav-text">{{ translate('Treasury Balance Report') }}</span>
   </a>
 </li>
 <li class="aiz-side-nav-item">

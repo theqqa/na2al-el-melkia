@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon $date
  * @property string|null $price
  * @property int|null $representative_id
+ * @property int|null $code
+
  * @property string|null $payment_by
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at

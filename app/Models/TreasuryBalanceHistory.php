@@ -32,6 +32,9 @@ class TreasuryBalanceHistory extends Model
     {
         return $this->belongsTo(CatchReceipt::class);
     }
-
+    public function permissionExchange()
+    {
+        return $this->belongsTo(PermissionExchange::class);
+    }
 
 }

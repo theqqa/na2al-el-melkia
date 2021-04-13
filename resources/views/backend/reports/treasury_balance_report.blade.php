@@ -27,7 +27,9 @@
                     </div>
                     <div class="card-header row ">
                         @if(!empty($business_settings))
-                            <span class="btn-soft-success aiz-side-nav-text float-lg-right">{{__('Money')}} :{{$business_settings->value }} <span class="small">ريال</span></span>
+                            <span class="btn-soft-success aiz-side-nav-text float-lg-right">{{translate('Initial Balance')}} : {{ $business_settings_initial->value }} <span class="small">ريال</span></span>
+
+                            <span class="btn-soft-success aiz-side-nav-text float-lg-right">{{translate('Total Balance')}} :{{$business_settings->value }} <span class="small">ريال</span></span>
                         @endif
                     </div>
 
@@ -39,9 +41,9 @@
         <th data-breakpoints="lg">#</th>
         <th>{{translate('Date')}}</th>
         <th data-breakpoints="lg">{{ translate('Service') }}</th>
-        <th data-breakpoints="lg">{{ translate('Balance Before') }}</th>
-        <th data-breakpoints="lg">{{ translate('Balance Request') }}</th>
-        <th data-breakpoints="lg">{{ translate('Balance After') }}</th>
+        <th data-breakpoints="lg">{{ translate('Statement') }}</th>
+        <th data-breakpoints="lg">{{ translate('Price') }}</th>
+        <th data-breakpoints="lg">{{ translate('Balance') }}</th>
 
     </tr>
     </thead>
@@ -52,12 +54,20 @@
             <td>{{ date('Y-m-d', strtotime($treasury_balance->created_at)) }}</td>
             @if(!empty($treasury_balance->catch_receipt_id))
 
-                <td><a href="{{route('catch_receipts.edit',$treasury_balance->catchReceipt->id )}}">{{__('View Catch Receipt')}}</a></td>
+                <td><a href="{{route('catch_receipts.edit',$treasury_balance->catchReceipt->id )}}">{{translate('Catch Receipt').' - '.$treasury_balance->catchReceipt->code}}</a></td>
             @elseif(!empty($treasury_balance->permission_exchange_id))
-                <td><a href="{{route('permission_exchanges.show',$treasury_balance->permission_exchange_id)}}">{{__('Permission Exchange')}}</a></td>
+                <td><a href="{{route('permission_exchanges.show',$treasury_balance->permission_exchange_id)}}">{{translate('Permission Exchanges')}}</a></td>
             @endif
-            <td>{{ $treasury_balance->balance_before}}</td>
-            <td>{{ $treasury_balance->balance_request }}</td>
+            @if(!empty($treasury_balance->catch_receipt_id))
+                <td><a href="{{route('representatives.show', encrypt( $treasury_balance->catchReceipt->representative->id))}}">{{ $treasury_balance->catchReceipt->representative->name}}</a></td>
+
+                <td>{{ $treasury_balance->balance_request }}</td>
+            @elseif(!empty($treasury_balance->permission_exchange_id))
+                <td>{{ $treasury_balance->permissionExchange->expense->name}}</td>
+
+                <td style="color: red">{{- $treasury_balance->balance_request }}</td>
+
+            @endif
             <td>{{ $treasury_balance->balance_after}}</td>
 
 

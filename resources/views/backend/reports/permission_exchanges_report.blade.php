@@ -89,11 +89,25 @@
 <td>{{$permission_exchange->description}} </td>
         </tr>
         @if($loop->last)
-            <tr style="font-weight: bold">>
-                <td colspan="2">{{translate('Total2')}}</td>
-                <td colspan="6" class="btn-soft-success aiz-side-nav-text">{{$total_price}} <span class="small">ريال</span> </td>
+            @if(!empty($expense_id ) )
+            <?php $expense_selected=App\Models\Expense::find($expense_id)?>
+            <tr style="font-weight: bold">
+                <td colspan="2">{{translate('Initial Balance')}}</td>
+                <td colspan="6" class="btn-soft-success aiz-side-nav-text">{{$expense_selected->initial_balance}} <span class="small">ريال</span> </td>
 
             </tr>
+            <tr style="font-weight: bold">
+                <td colspan="2">{{translate('Total2')}}</td>
+                <td colspan="6" class="btn-soft-success aiz-side-nav-text">{{$total_price+$expense_selected->initial_balance }} <span class="small">ريال</span> </td>
+
+            </tr>
+                @else
+                <tr style="font-weight: bold">
+                    <td colspan="2">{{translate('Total2')}}</td>
+                    <td colspan="6" class="btn-soft-success aiz-side-nav-text">{{$total_price }} <span class="small">ريال</span> </td>
+
+                </tr
+        @endif
         @endif
     @endforeach
     </tbody>

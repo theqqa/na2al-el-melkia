@@ -3,7 +3,7 @@
 @section('content')
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class=" align-items-center">
-       <h1 class="h3">{{translate('User Transaction Report')}}</h1>
+       <h1 class="h3">{{translate('Catch Receipts Report')}}</h1>
 	</div>
 </div>
 

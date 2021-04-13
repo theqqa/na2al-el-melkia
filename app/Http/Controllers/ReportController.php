@@ -104,24 +104,58 @@ foreach ($total_1 as $key_1=>$value){
         $rep=Representative::all();
                 $date_range=null;
         $paid_hist=0;
+        $count_ownership=0;
+        $count_renewal=0;
+        $code_id=null;
+        $pre_total=null;
+        $codes=[];
         $rep_hists = RepresentativeHistory::orderBy('created_at', 'asc');
-        if ($request->has('rep_id') && $request->rep_id != "null"){
+
+            if ($request->has('rep_id') && $request->rep_id != "null"){
             $rep_id = $request->rep_id;
+
             $rep_hists = $rep_hists->where('rep_id', $rep_id);
             $paid_hist= RepresentativeHistory::where('rep_id', $rep_id)->whereNotNull('catch_receipt_id')->sum('deserved_amount_request');
-            $trans_rep= RepresentativeHistory::where('rep_id', $rep_id)->whereNotNull('transaction_id');
+
+        }
+        if ($request->has('code') && $request->code != "null") {
+            $code_id = $request->code;
+            $rep_hists = $rep_hists->whereHas('transaction', function($q)use ( $code_id ){
+                $q->where('transaction_id',$code_id);
+            })->orWhereHas('catchReceipt', function($q)use ( $code_id ){
+                $q->where('code',$code_id);
+            });
 
         }
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
+
             $rep_hists = $rep_hists->whereDate('created_at', '>=', $date_range1[0]);
             $rep_hists = $rep_hists->whereDate('created_at', '<=', $date_range1[1]);
+           $pre_total= RepresentativeHistory::whereDate('created_at', '<', $date_range1[0]);
+            if ($request->has('rep_id') && $request->rep_id != "null"){
+                $pre_total=$pre_total->where('rep_id', $request->rep_id)->get()->last();
+            }else{
+                $pre_total=$pre_total->get()->last();
+
+            }
+
         }
-        $rep_hists = $rep_hists->paginate(15);
+        $rep_hists = $rep_hists->get();
+
+        foreach ($rep_hists as $key => $val){
+                 if(!empty($val->catch_receipt_id))
+              $codes[]=$val->catchReceipt->code ;
+
+              elseif(!empty($val->transaction_id))
+                $codes[]=$val->transaction->transaction_id ;
 
 
-        return view('backend.reports.representative_report', compact('paid_hist','rep_hists','rep_id','date_range','rep'));
+        }
+
+        $codes= array_filter($codes);
+        return view('backend.reports.representative_report', compact('code_id','count_ownership','codes','pre_total','count_renewal','paid_hist','rep_hists','rep_id','date_range','rep'));
     }
 
     public function catch_receipts_report(Request $request)
@@ -177,7 +211,7 @@ foreach ($total_1 as $key_1=>$value){
     }
     public function treasury_balance_report(Request $request)
     {
-        $treasury_balances = TreasuryBalanceHistory::orderBy('created_at', 'desc');
+        $treasury_balances = TreasuryBalanceHistory::orderBy('created_at', 'asc');
                         $date_range=null;
 
         if ($request->date_range) {
@@ -188,8 +222,9 @@ foreach ($total_1 as $key_1=>$value){
         }
         $treasury_balances = $treasury_balances->paginate(15);
         $business_settings = BusinessSetting::where('type', 'treasury_balance')->first();
+        $business_settings_initial = BusinessSetting::where('type', 'initial_treasury_balance')->first();
 
-        return view('backend.reports.treasury_balance_report', compact('treasury_balances','date_range','business_settings'));
+        return view('backend.reports.treasury_balance_report', compact('business_settings_initial','treasury_balances','date_range','business_settings'));
     }
     public function users_taam_report(Request $request)
     {
