@@ -58,11 +58,11 @@ if (! function_exists('sendSMS')) {
             $client = new Client($sid, $token);
             try {
                 $message = $client->messages->create(
-                  $to, // Text this number
-                  array(
-                    'from' => env('VALID_TWILLO_NUMBER'), // From a valid Twilio number
-                    'body' => $text
-                  )
+                    $to, // Text this number
+                    array(
+                        'from' => env('VALID_TWILLO_NUMBER'), // From a valid Twilio number
+                        'body' => $text
+                    )
                 );
             } catch (\Exception $e) {
 
@@ -122,22 +122,22 @@ if (! function_exists('sendSMS')) {
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-              CURLOPT_URL => "https://www.fast2sms.com/dev/bulkV2",
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_SSL_VERIFYHOST => 0,
-              CURLOPT_SSL_VERIFYPEER => 0,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode($fields),
-              CURLOPT_HTTPHEADER => array(
-                "authorization: $auth_key",
-                "accept: */*",
-                "cache-control: no-cache",
-                "content-type: application/json"
-              ),
+                CURLOPT_URL => "https://www.fast2sms.com/dev/bulkV2",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($fields),
+                CURLOPT_HTTPHEADER => array(
+                    "authorization: $auth_key",
+                    "accept: */*",
+                    "cache-control: no-cache",
+                    "content-type: application/json"
+                ),
             ));
 
             $response = curl_exec($curl);
@@ -188,7 +188,7 @@ if (! function_exists('default_language')) {
 /**
  * Save JSON File
  * @return Response
-*/
+ */
 if (! function_exists('convert_to_usd')) {
     function convert_to_usd($amount) {
         $business_settings = BusinessSetting::where('type', 'system_default_currency')->first();
@@ -852,7 +852,7 @@ if (! function_exists('my_asset')) {
             return Storage::disk('s3')->url($path);
         }
         else {
-            return app('url')->asset('/'.$path, $secure);
+            return app('url')->asset('public/'.$path, $secure);
         }
     }
 }
@@ -867,7 +867,7 @@ if (! function_exists('static_asset')) {
      */
     function static_asset($path, $secure = null)
     {
-        return app('url')->asset('/'.$path, $secure);
+        return app('url')->asset('public/'.$path, $secure);
     }
 }
 
@@ -898,7 +898,7 @@ if (!function_exists('getFileBaseURL')) {
             return env('AWS_URL').'/';
         }
         else {
-            return getBaseURL();
+            return getBaseURL().'public/';
         }
     }
 }
