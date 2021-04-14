@@ -99,24 +99,27 @@ class BusinessSettingsController extends Controller
 
     public function treasury_balance_update(Request $request){
         $business_settings = BusinessSetting::where('type', $request->type)->first();
-        $business_settings->type = $request->type;
-        $business_settings->value = $request->value;
-        $business_settings->save();
+
         $business_settings_balance = BusinessSetting::where('type', 'treasury_balance')->first();
         if($business_settings_balance->value ==0){
             $business_settings_balance->value = $request->value;
             $business_settings_balance->save();
         }else{
+
             if($business_settings->value < $request->value){
+
                 $sub=$request->value-$business_settings->value ;
-                $business_settings_balance +=$sub;
+                $business_settings_balance->value +=$sub;
             }elseif ($business_settings->value > $request->value){
                 $sub=$business_settings->value -$request->value ;
-                $business_settings_balance -=$sub;
+                $business_settings_balance->value -=$sub;
 
             }
             $business_settings_balance->save();
         }
+        $business_settings->type = $request->type;
+        $business_settings->value = $request->value;
+        $business_settings->save();
 
         flash(translate('Treasury Balance updated successfully'))->success();
         return back();

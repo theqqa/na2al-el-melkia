@@ -227,6 +227,7 @@ foreach ($total_1 as $key_1=>$value){
         }
         $treasury_balances_now = TreasuryBalanceHistory::all()->last();
  if(!empty($treasury_balances_now)){
+//     dd($treasury_balances_now->balance_after,$business_settings->value);
    if(  $treasury_balances_now->balance_after < $business_settings->value ){
       $changed_treasury= $business_settings->value-$treasury_balances_now->balance_after;
    }
