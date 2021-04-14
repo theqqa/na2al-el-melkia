@@ -25,7 +25,7 @@
                   <div class="form-group row">
                       <label class="col-sm-3 control-label" for="name">{{translate('Code')}}</label>
                       <div class="col-sm-9">
-                          <input type="text" placeholder="{{translate('Code')}}" id="code" value="{{$catch_receipt->code}}" name="code" class="form-control" required>
+                          <input type="text" placeholder="{{translate('Code')}}" id="code" value="{{$catch_receipt->code}}" name="code" class="form-control" readonly required>
                       </div>
                   </div>
                   <div class="form-group row">

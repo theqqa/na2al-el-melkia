@@ -13,10 +13,7 @@
             <div class="card-body">
                 <form action="{{ route('catch_receipts_report.index') }}" method="GET">
 
-
-
-
-                    <div class="card-header row gutters-5">
+                    <div class="card-header row ">
                         <div class="col text-center text-md-left">
                             <h5 class="mb-md-0 h6">{{ translate('Sort by Representative') }}</h5>
                         </div>
@@ -41,17 +38,20 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-header row ">
-                    @if(!empty($rep_id) && $rep_id != null)
-                      <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
-                      <span class="btn-soft-success aiz-side-nav-text">{{translate('Transfer Price Service')}} :{{$rep->transfer_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-info aiz-side-nav-text">{{translate('Renewal Price Service')}} :{{$rep->renewal_price }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-danger aiz-side-nav-text">{{translate('Deserved Amount')}} :{{$rep->deserved_amount }} <span class="small">ريال</span></span>
 
-                        @endif
-</div>
 </form>
+                <div id="divName">
+                @if(!empty($rep_id) && $rep_id != null)
+                <div class="card-header row ">
 
+                        <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
+                        <span class="btn-soft-success aiz-side-nav-text">{{translate('Transfer Price Service')}} :{{$rep->transfer_price }} <span class="small">ريال</span></span>
+                        <span class="btn-soft-info aiz-side-nav-text">{{translate('Renewal Price Service')}} :{{$rep->renewal_price }} <span class="small">ريال</span></span>
+                        <span class="btn-soft-danger aiz-side-nav-text">{{translate('Deserved Amount')}} :{{$rep->deserved_amount }} <span class="small">ريال</span></span>
+
+
+                </div>
+                @endif
 <table class="table table-bordered  mb-0">
     <thead>
     <tr>
@@ -65,7 +65,7 @@
     <tbody>
     @foreach($catch_receipts as $key => $catch_receipt)
         <tr>
-            <td>{{ ($key+1) + ($catch_receipts->currentPage() - 1)*$catch_receipts->perPage() }}</td>
+            <td>{{ ($key+1) }}</td>
             <td>{{ date('Y-m-d', strtotime($catch_receipt->date)) }}</td>
             <td>{{ $catch_receipt->representative->name }}</td>
             <td>{{ $catch_receipt->price}}</td>
@@ -74,7 +74,7 @@
         </tr>
 {{--        @if(!empty($rep_id) && $rep_id != null)--}}
         @if($loop->last)
-            <tr style="font-weight: bold">>
+            <tr style="font-weight: bold">
                 <td colspan="3">{{translate('Total2')}}</td>
                 <td colspan="2" class="btn-soft-success aiz-side-nav-text">{{$total_price}} <span class="small">ريال</span> </td>
 
@@ -84,12 +84,34 @@
     @endforeach
     </tbody>
 </table>
-                <div class="aiz-pagination mt-4">
-                    {{ $catch_receipts->links() }}
-                </div>
+                <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
+
+{{--                <div class="aiz-pagination mt-4">--}}
+{{--                    {{ $catch_receipts->links() }}--}}
+{{--                </div>--}}
+            </div>
 </div>
+
 </div>
 </div>
 </div>
 
+@endsection
+@section('script')
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+
+            document.body.innerHTML = originalContents;
+        }
+
+    </script>
 @endsection

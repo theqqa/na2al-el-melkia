@@ -3,11 +3,11 @@
 @section('content')
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class=" align-items-center">
-       <h1 class="h3">{{translate('User Transaction Report')}}</h1>
+       <h1 class="h3">{{translate('Representative Report')}}</h1>
 	</div>
 </div>
 
-<div class="row" id="divName">
+<div class="row" >
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-body">
@@ -23,7 +23,7 @@
 
                             <div class="col-md-3 ml-auto">
                                 <select class="from-control aiz-selectpicker" name="rep_id" data-live-search="true"  required >
-                                    <option value="null" @if(empty($rep_id ) )selected @endif>{{ __('All') }}</option>
+                                    <option value="null" @if(empty($rep_id ) )selected @endif>{{ translate('All') }}</option>
                                     @foreach($rep as $key=>$val)
                                         <option value="{{$val->id}}" @if($rep_id == $val->id) selected @endif>{{ $val->name }}</option>
                                     @endforeach
@@ -32,7 +32,7 @@
 
                         <div class="col-md-3 ml-auto">
                             <select class="from-control aiz-selectpicker" name="code" data-live-search="true"  required >
-                                <option value="null" @if(empty($code_id ) )selected @endif>{{ __('All Code') }}</option>
+                                <option value="null" @if(empty($code_id ) )selected @endif>{{ translate('All Code') }}</option>
                                 @foreach($codes as $key=>$val)
                                     <option value="{{$val}}" @if( $code_id== $val) selected @endif>{{ $val }}</option>
                                 @endforeach
@@ -50,33 +50,35 @@
                             </button>
                         </div>
                     </div>
-                    @if(!empty($rep_id) && $rep_id != null)
 
-                    <div class="card-header row ">
-                      <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
-                      <span class="btn-soft-success aiz-side-nav-text">{{translate('Representative Name')}} :{{$rep->name }} <span class="small">ريال</span></span>
-                          <span class="btn-soft-info aiz-side-nav-text">{{translate('Representative Code')}} :{{$rep->code }} <span class="small">ريال</span></span>
-
-
-</div>
-
-                        <br>
-                            <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
-                            <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Code')}} : {{ $rep->code }}</h5>
-                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Name')}} : {{ $rep->name }}</h5>
-                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Initial Balance')}} : {{ $rep->initial_balance }} <span class="small">ريال</span></h5>
-                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Required Balance')}} : {{ $rep->deserved_amount }} <span class="small">ريال</span></h5>
-                                <h5 class="mb-md-0 h6 col-6 ">{{translate('Paid Balance')}} : {{ $paid_hist }} <span class="small">ريال</span></h5>
-
-@if($pre_total !=null)
-                            <h5 class="mb-md-0 h6 col-6 ">{{translate('Previous Balance')}} : {{$pre_total-> deserved_amount_after }} <span class="small">ريال</span></h5>
-
-                        @endif
-<br>
-                        @endif
 
 </form>
+                <div  id="divName">
 
+                @if(!empty($rep_id) && $rep_id != null)
+
+                    <div class="card-header row ">
+                        <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
+                        <span class="btn-soft-success aiz-side-nav-text">{{translate('Representative Name')}} :{{$rep->name }} </span>
+                        <span class="btn-soft-info aiz-side-nav-text">{{translate('Representative Code')}} :{{$rep->code }} </span>
+
+
+                    </div>
+
+                    <br>
+                    <?php   $rep =   \App\Models\Representative::find($rep_id); ?>
+                    <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Code')}} : {{ $rep->code }}</h5>
+                    <h5 class="mb-md-0 h6 col-6 ">{{translate('Representative Name')}} : {{ $rep->name }}</h5>
+                    <h5 class="mb-md-0 h6 col-6 ">{{translate('Initial Balance')}} : {{ $rep->initial_balance }} <span class="small">ريال</span></h5>
+                    <h5 class="mb-md-0 h6 col-6 ">{{translate('Required Balance')}} : {{ $rep->deserved_amount }} <span class="small">ريال</span></h5>
+                    <h5 class="mb-md-0 h6 col-6 ">{{translate('Paid Balance')}} : {{ $paid_hist }} <span class="small">ريال</span></h5>
+
+                    @if($pre_total !=null)
+                        <h5 class="mb-md-0 h6 col-6 ">{{translate('Previous Balance')}} : {{$pre_total-> deserved_amount_after }} <span class="small">ريال</span></h5>
+
+                    @endif
+                    <br>
+                @endif
 <table class="table table-bordered  mb-0">
 <thead>
   <tr>
@@ -87,8 +89,9 @@
       <th>{{translate('Transactions Id').'/'.translate('Code Catch receipts')}}</th>
 {{--      <th data-breakpoints="lg">{{ translate('Price Before') }}</th>--}}
       <th data-breakpoints="lg">{{ translate('Price') }}</th>
-      <th data-breakpoints="lg">{{ translate('Price After') }}</th>
+      <th data-breakpoints="lg">{{ translate('Balance') }}</th>
 </thead>
+
 <tbody>
 <?php
 $count_ownership =0;
@@ -166,27 +169,28 @@ $codes=[];
                   <td colspan="2" class="btn-soft-success aiz-side-nav-text"> {{$total_2}} <span class="small"> ريال</span> </td>
 
               </tr>
-              <tr style="font-weight: bold">
-                  <td colspan="5">{{translate('Tax')}}</td>
-                  <td colspan="2" class="btn-soft-success aiz-side-nav-text">15 <span class="small">%</span> </td>
+{{--              <tr style="font-weight: bold">--}}
+{{--                  <td colspan="5">{{translate('Tax')}}</td>--}}
+{{--                  <td colspan="2" class="btn-soft-success aiz-side-nav-text">15 <span class="small">%</span> </td>--}}
 
-              </tr>
-              <tr style="font-weight: bold">
-                  <td colspan="5">{{translate('Total')}}</td>
-                  <td colspan="2" class="btn-soft-success aiz-side-nav-text">{{$total_2+.15*$total_2}} <span class="small">ريال </span> </td>
+{{--              </tr>--}}
+{{--              <tr style="font-weight: bold">--}}
+{{--                  <td colspan="5">{{translate('Total')}}</td>--}}
+{{--                  <td colspan="2" class="btn-soft-success aiz-side-nav-text">{{$total_2+.15*$total_2}} <span class="small">ريال </span> </td>--}}
 
-              </tr>
+{{--              </tr>--}}
           @endif
   @endforeach
 
 </tbody>
 </table>
+                </div>
 {{--                <div class="aiz-pagination mt-4">--}}
 {{--                    {{ $rep_hists->links() }}--}}
 {{--                </div>--}}
                 <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
                 @if(!empty($rep_id ) )
-                <button class="btn btn-md btn-info "  onClick="sendDiv({{$rep_id}});" id="print_id">   <span  class=" las la-paper-plane"> {{ translate('send') }}</span> </button>
+                <button class="btn btn-md btn-info "  onClick="sendDiv({{$rep_id}});" >   <span  class=" las la-paper-plane"> {{ translate('send') }}</span> </button>
 
 @endif
             </div>

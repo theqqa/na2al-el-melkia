@@ -34,7 +34,7 @@
 {{--                <div class="form-group row">--}}
 {{--                    <label class="col-sm-3 col-from-label" for="email">{{translate('Code')}}</label>--}}
 {{--                    <div class="col-sm-9">--}}
-                        <input type="hidden"  id="code" name="code" class="form-control"  value="{{ \Illuminate\Support\Str::random(8) }}" readonly>
+{{--                        <input type="hidden"  id="code" name="code" class="form-control"  value="{{ \Illuminate\Support\Str::random(3) }}" readonly>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
                 <div class="form-group row">

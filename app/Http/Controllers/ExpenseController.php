@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\ExpenseTranslation;
+use App\Models\PermissionExchange;
 use Illuminate\Http\Request;
 use App\Brand;
 use App\BrandTranslation;
@@ -130,7 +131,12 @@ class ExpenseController extends Controller
     {
         $expense = Expense::findOrFail($id);
 //        Product::where('brand_id', $brand->id)->delete();
-        dd($expense);
+      $per_count=  PermissionExchange::whereExpenseId($id)->count();
+        if($per_count>0 )
+        {
+            flash(translate('This Expense have Related Permission Exchange. Can\'t deleted'))->error();
+            return back();
+        }
         foreach ($expense->expense_translations as $key => $expense_translation) {
             $expense_translation->delete();
         }

@@ -13,18 +13,18 @@
             <div class="card-body">
                 <form action="{{ route('users_taam_report.index') }}" method="GET">
                     <div class="card-header row gutters-5">
-{{--                        <div class="col text-center text-md-left">--}}
-{{--                            <h5 class="mb-md-0 h6">{{ translate('Sort by User') }}</h5>--}}
-{{--                        </div>--}}
+                        <div class="col text-center text-md-left">
+                            <h5 class="mb-md-0 h6">{{ translate('Sort by User') }}</h5>
+                        </div>
 
-{{--                            <div class="col-md-3 ml-auto">--}}
-{{--                                <select class="from-control aiz-selectpicker" name="user_id" required>--}}
-{{--                                    <option value="null" @if(empty($user_id ) )selected @endif>{{ translate('All') }}</option>--}}
-{{--                                    @foreach($users as $key=>$val)--}}
-{{--                                        <option value="{{$val->user->id}}" @if($user_id == $val->user->id) selected @endif>{{ $val->user->name }}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
+                            <div class="col-md-3 ml-auto">
+                                <select class="from-control aiz-selectpicker" name="user_id" required>
+                                    <option value="null" @if(empty($user_id ) )selected @endif>{{ translate('All') }}</option>
+                                    @foreach($users as $key=>$val)
+                                        <option value="{{$val->user->id}}" @if($user_id == $val->user->id) selected @endif>{{ $val->user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                         <div class="col-md-3">
                             <div class="form-group mb-0">

@@ -72,14 +72,17 @@
                             </td>
                         @else
                             <td>
-                                <span class="btn-danger">{{     translate('No file uploaded')
-}}</span>
+                                <span class="btn-danger">{{     translate('No file uploaded')}}</span>
                             </td>
 @endif
 						<td class="text-right">
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('transactions.edit', ['id'=>$transaction->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-edit"></i>
                             </a>
+                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('transactions.user.board', ['user_id'=>$transaction->user_id] )}}" title="{{ translate('Edit') }}">
+                                <i class="las la-user"></i>
+                            </a>
+
 {{--                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">--}}
 {{--                                <i class="las la-trash"></i>--}}
 {{--                            </a>--}}

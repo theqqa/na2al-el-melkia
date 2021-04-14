@@ -42,9 +42,10 @@
                         </div>
                     </div>
                 </form>
+                <div id="divName">
                 <div class="card-header row ">
 
-                        <span class="btn-soft-success aiz-side-nav-text">{{translate('Initial Treasury Balance')}} :{{$initial_treasury_balance }} <span class="small">ريال</span></span>
+{{--                        <span class="btn-soft-success aiz-side-nav-text">{{translate('Initial Treasury Balance')}} :{{$initial_treasury_balance }} <span class="small">ريال</span></span>--}}
                     <span class="btn-soft-info aiz-side-nav-text">{{translate('Previse Balance')}} :{{$total_pre }} <span class="small">ريال</span></span>
 
                 </div>
@@ -123,9 +124,30 @@
                     <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn btn-icon btn-circle  btn-soft-danger"> {{$count_renewal}}</span></h6>
 
                 </div>
+                </div>
+                <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
+
             </div>
         </div>
     </div>
 </div>
 
+@endsection
+@section('script')
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+
+            document.body.innerHTML = originalContents;
+        }
+
+    </script>
 @endsection

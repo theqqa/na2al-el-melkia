@@ -17,7 +17,7 @@
                             <input type="text" placeholder="{{translate('Price')}}" id="price" name="price" class="form-control" required>
                         </div>
                     </div>
-                    <input type="hidden"  id="code" name="code" class="form-control"  value="{{ \Illuminate\Support\Str::random(8) }}" readonly>
+                    <input type="hidden"  id="code" name="code" class="form-control"  value="{{'Cr-'.\Illuminate\Support\Str::random(2) }}" readonly>
 
                     <div class="form-group row">
                         <label class="col-sm-3 control-label" for="name">{{translate('Date')}}</label>

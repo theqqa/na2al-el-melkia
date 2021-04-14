@@ -54,6 +54,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/representatives/destroy/{id}', 'RepresentativeController@destroy')->name('representatives.destroy');
 
     Route::resource('expenses', 'ExpenseController');
+    Route::get('/expenses/destroy/{id}', 'ExpenseController@destroy')->name('expenses.destroy');
+
     Route::get('/taam_expenses', 'BusinessSettingsController@taam_expenses')->name('business_settings.taam_expenses');
     Route::post('/taam_expenses_update', 'BusinessSettingsController@taam_expenses_update')->name('business_settings.taam_expenses.update');
 
@@ -64,6 +66,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/transactions/destroy/{id}', 'TransactionController@destroy')->name('transactions.destroy');
     Route::get('/transaction/uploaded', 'TransactionController@uploaded_file')->name('transaction.uploaded_file');
     Route::post('/transaction/post/uploaded', 'TransactionController@post_uploaded_file')->name('transaction.post.uploaded_file');
+    Route::get('/transaction/user/board', 'TransactionController@transactions_user_board')->name('transactions.user.board');
 
 //
     Route::get('/treasury_balance', 'BusinessSettingsController@treasury_balance')->name('business_settings.treasury_balance');

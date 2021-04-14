@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Representative;
 use App\Models\RepresentativeHistory;
 use App\Models\Transaction;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -243,5 +244,10 @@ if ($transaction->save()) {
 //        return 0;
     }
 
-
+    public function transactions_user_board(Request $request)
+    {
+        $user = User::find($request->user_id);
+        Auth::login($user);
+        return redirect()->route('admin.dashboard');
+    }
 }

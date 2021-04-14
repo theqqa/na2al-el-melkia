@@ -25,6 +25,10 @@
                             </button>
                         </div>
                     </div>
+
+
+</form>
+                <div id="divName">
                     <div class="card-header row ">
                         @if(!empty($business_settings))
                             <span class="btn-soft-success aiz-side-nav-text float-lg-right">{{translate('Initial Balance')}} : {{ $business_settings_initial->value }} <span class="small">ريال</span></span>
@@ -32,9 +36,6 @@
                             <span class="btn-soft-success aiz-side-nav-text float-lg-right">{{translate('Total Balance')}} :{{$business_settings->value }} <span class="small">ريال</span></span>
                         @endif
                     </div>
-
-</form>
-
 <table class="table table-bordered  mb-0">
     <thead>
     <tr>
@@ -50,7 +51,7 @@
     <tbody>
     @foreach($treasury_balances as $key => $treasury_balance)
         <tr>
-            <td>{{ ($key+1) + ($treasury_balances->currentPage() - 1)*$treasury_balances->perPage() }}</td>
+            <td>{{ $key+1 }}</td>
             <td>{{ date('Y-m-d', strtotime($treasury_balance->created_at)) }}</td>
             @if(!empty($treasury_balance->catch_receipt_id))
 
@@ -68,19 +69,40 @@
                 <td style="color: red">{{- $treasury_balance->balance_request }}</td>
 
             @endif
-            <td>{{ $treasury_balance->balance_after}}</td>
+            <td>{{ $treasury_balance->balance_after + $changed_treasury}}</td>
 
 
         </tr>
     @endforeach
     </tbody>
 </table>
-                <div class="aiz-pagination mt-4">
-                    {{ $treasury_balances->links() }}
+                    <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
+
                 </div>
+{{--                <div class="aiz-pagination mt-4">--}}
+{{--                    {{ $treasury_balances->links() }}--}}
+{{--                </div>--}}
 </div>
 </div>
 </div>
 </div>
 
+@endsection
+@section('script')
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+
+            document.body.innerHTML = originalContents;
+        }
+
+    </script>
 @endsection

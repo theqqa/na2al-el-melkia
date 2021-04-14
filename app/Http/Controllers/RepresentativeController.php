@@ -76,7 +76,8 @@ class RepresentativeController extends Controller
         $user->register_at = $request->register_at;
 
         if($user->save()){
-
+            $user->code = 'Re-'.$user->id;
+            $user->save();
                 flash(translate('Representative has been inserted successfully'))->success();
                 return redirect()->route('representatives.index');
 

@@ -43,8 +43,8 @@
                     </div>
 
 </form>
-
-<table class="table table-bordered  mb-0">
+<div id="divName">
+<table class="table table-bordered  mb-0" >
     <thead>
     <tr>
         <th data-breakpoints="lg">#</th>
@@ -62,7 +62,7 @@
     <tbody>
     @foreach($permission_exchanges as $key => $permission_exchange)
         <tr>
-            <td>{{ ($key+1) + ($permission_exchanges->currentPage() - 1)*$permission_exchanges->perPage() }}</td>
+            <td>{{ $key+1}}</td>
             <td>{{ date('Y-m-d', strtotime($permission_exchange->date)) }}</td>
             <td>{{ $permission_exchange->price}}</td>
 
@@ -112,12 +112,33 @@
     @endforeach
     </tbody>
 </table>
-                <div class="aiz-pagination mt-4">
-                    {{ $permission_exchanges->links() }}
-                </div>
+</div>
+                <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>
+
+                {{--                <div class="aiz-pagination mt-4">--}}
+{{--                    {{ $permission_exchanges->links() }}--}}
+{{--                </div>--}}
 </div>
 </div>
 </div>
 </div>
 
+@endsection
+@section('script')
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents = document.getElementById("divName").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('sidenav').style.display = 'none';
+            document.getElementById('nav').style.display = 'none';
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+
+            document.body.innerHTML = originalContents;
+        }
+
+    </script>
 @endsection
