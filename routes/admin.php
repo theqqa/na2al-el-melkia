@@ -51,6 +51,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     //by may
     Route::resource('representatives', 'RepresentativeController');
     Route::post('/representatives/active', 'RepresentativeController@updateActive')->name('representatives.active');
+    Route::get('/representatives/destroy/{id}', 'RepresentativeController@destroy')->name('representatives.destroy');
+
     Route::resource('expenses', 'ExpenseController');
     Route::get('/taam_expenses', 'BusinessSettingsController@taam_expenses')->name('business_settings.taam_expenses');
     Route::post('/taam_expenses_update', 'BusinessSettingsController@taam_expenses_update')->name('business_settings.taam_expenses.update');
