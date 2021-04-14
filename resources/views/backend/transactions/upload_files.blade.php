@@ -16,10 +16,10 @@
                         <div class="col-lg-9">
 
                             <div class="custom-file">
-                                <label class="custom-file-label">
-                                    <input type="file" name="tran_file[]" class="custom-file-input" multiple accept="application/pdf" required>
-                                    <span class="custom-file-name">{{ translate('Upload Files')}}</span>
-                                </label>
+{{--                                <label class="custom-file-label">--}}
+                                    <input type="file" name="tran_file[]"  multiple accept="application/pdf" required>
+{{--                                    <span class="custom-file-name">{{ translate('Upload Files')}}</span>--}}
+{{--                                </label>--}}
                             </div>
                         </div>
                     </div>

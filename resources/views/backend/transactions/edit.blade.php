@@ -17,7 +17,12 @@
                   <div class="form-group row">
                       <label class="col-sm-3 control-label" for="name">{{translate('Transaction Id')}}</label>
                       <div class="col-sm-9">
-                          <input type="text" placeholder="{{translate('Transaction Id')}}" id="name" value="{{$transaction->transaction_id}}" name="transaction_id" class="form-control" required>
+                          <input type="text" placeholder="{{translate('Transaction Id')}}" id="name" value="{{$transaction->transaction_id}}" name="transaction_id" class="form-control {{ $errors->has('transaction_id') ? ' is-invalid' : '' }}" required>
+                          @if ($errors->has('transaction_id'))
+                              <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('transaction_id') }}</strong>
+                                    </span>
+                          @endif
                       </div>
                   </div>
                   <div class="form-group row">

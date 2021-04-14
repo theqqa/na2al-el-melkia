@@ -71,12 +71,14 @@ class CatchReceiptController extends Controller
     {
         $catch_receipt = new CatchReceipt();
         $catch_receipt->date = $request->date;
-        $catch_receipt->code = $request->code;
+//        $catch_receipt->code = $request->code;
         $catch_receipt->representative_id = $request->representative_id;
         $catch_receipt->price =$request->price;
         $catch_receipt->payment_by = $request->payment_by;
         $catch_receipt->description = $request->description;
 if ($catch_receipt->save()) {
+    $catch_receipt->code = 'Cr-'.$catch_receipt->id;
+    $catch_receipt->save();
     $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
     $treasury_balance_history= new  TreasuryBalanceHistory();
     $treasury_balance_history->catch_receipt_id=$catch_receipt->id;

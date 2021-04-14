@@ -178,7 +178,7 @@ class PermissionExchangeController extends Controller
         $treasury_balance_history->permission_exchange_id=$permission_exchange->id;
         $treasury_balance_history->balance_before= $treasury_balance->value;
         $treasury_balance_history->balance_request=$permission_exchange->price;
-        $treasury_balance_history->balance_after=$treasury_balance->value + $permission_exchange->price ;
+        $treasury_balance_history->balance_after=$treasury_balance->value - $permission_exchange->price ;
         $treasury_balance_history->save();
         $treasury_balance->value= $treasury_balance->value - $permission_exchange->price ;
         $treasury_balance->save();

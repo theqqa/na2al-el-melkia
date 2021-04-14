@@ -68,8 +68,8 @@
 
             <td>{{ $permission_exchange->expense->name }}</td>
 
+            <td>{{ $permission_exchange->expense_by==1?translate('Cache'):translate('Bank transfer')}}</td>
 
-            <td>{{ $permission_exchange->expense_by}}</td>
             <td>
                 @if($permission_exchange->approved == 1)
                     <span class="btn-soft-success">  {{translate('Admin Approved')}} </span>

@@ -13,6 +13,7 @@ use App\FlashDeal;
 use App\FlashDealTranslation;
 use App\FlashDealProduct;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class TransactionController extends Controller
@@ -95,6 +96,11 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+        $data=$request->all();
+
+        Validator::make($data, [
+            'transaction_id' => 'required|unique:transactions|max:255',
+        ])->validate();
         $transaction = new Transaction();
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;
@@ -169,6 +175,11 @@ if ($transaction->save()) {
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+
+        Validator::make($data, [
+            'transaction_id' => 'required|unique:transactions,transaction_id,'.$id,
+        ])->validate();
         $transaction = Transaction::findOrFail($id);
 
         $transaction->transaction_id = $request->transaction_id;

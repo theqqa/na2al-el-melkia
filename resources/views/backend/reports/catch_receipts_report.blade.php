@@ -20,7 +20,7 @@
 
                             <div class="col-md-3 ml-auto">
                                 <select class="from-control aiz-selectpicker" name="rep_id" required>
-                                    <option value="null" @if(empty($rep_id ) )selected @endif>{{ __('All') }}</option>
+                                    <option value="null" @if(empty($rep_id ) )selected @endif>{{ translate('All') }}</option>
                                     @foreach($rep as $key=>$val)
                                         <option value="{{$val->id}}" @if($rep_id == $val->id) selected @endif>{{ $val->name }}</option>
                                     @endforeach
