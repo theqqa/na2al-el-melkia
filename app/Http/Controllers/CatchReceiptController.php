@@ -71,6 +71,7 @@ class CatchReceiptController extends Controller
     {
         $catch_receipt = new CatchReceipt();
         $catch_receipt->date = $request->date;
+        $catch_receipt->code = $request->code;
         $catch_receipt->representative_id = $request->representative_id;
         $catch_receipt->price =$request->price;
         $catch_receipt->payment_by = $request->payment_by;
