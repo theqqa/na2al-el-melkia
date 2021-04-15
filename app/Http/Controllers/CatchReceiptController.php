@@ -204,31 +204,15 @@ if ($catch_receipt->save()) {
             $direction = 'rtl';
             $text_align = 'right';
             $not_text_align = 'left';
+            $font_family = "'XBRiyaz','sans-serif'";
         }else{
             $direction = 'ltr';
             $text_align = 'left';
             $not_text_align = 'right';
+            $font_family = "'Roboto','sans-serif'";
+
         }
 
-        if($currency_code == 'BDT' || $language_code == 'bd'){
-            // bengali font
-            $font_family = "'Hind Siliguri','sans-serif'";
-        }elseif($currency_code == 'KHR' || $language_code == 'kh'){
-            // khmer font
-            $font_family = "'Hanuman','sans-serif'";
-        }elseif($currency_code == 'AMD'){
-            // Armenia font
-            $font_family = "'arnamu','sans-serif'";
-        }elseif($currency_code == 'ILS'){
-            // Israeli font
-            $font_family = "'Varela Round','sans-serif'";
-        }elseif($currency_code == 'AED' || $currency_code == 'EGP'){
-            // middle east/arabic font
-            $font_family = "'XBRiyaz','sans-serif'";
-        }else{
-            // general for all
-            $font_family = "'Roboto','sans-serif'";
-        }
         $catch_receipt = CatchReceipt::findOrFail($id);
         return PDF::loadView('backend.catch_receipts.catch_receipts_print',[
             'catch_receipt' => $catch_receipt,

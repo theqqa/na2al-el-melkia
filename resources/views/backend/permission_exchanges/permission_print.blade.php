@@ -94,13 +94,13 @@
             <table>
 				@php
 				@endphp
-				<tr><td class="strong small gry-color">{{ __('Expense Item') }}: {{$permission->expense->name}}</td></tr>
-				<tr><td class="strong">{{ __('Expense By') }}: {{$permission->expense_by}}</td></tr>
-				<tr><td class="gry-color small">{{ __('Price')}}: {{single_price($permission->price)}}</td></tr>
+				<tr><td class="strong small gry-color">{{ translate('Expense Item') }}: {{$permission->expense->name}}</td></tr>
+				<tr><td class="strong">{{ translate('Expense By') }}: {{$permission->expense_by}}</td></tr>
+				<tr><td class="gry-color small">{{ translate('Price')}}: {{single_price($permission->price)}}</td></tr>
 
 			</table>
 		</div>
-<H3 class="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">{{__('Description')}}</H3>
+<h3 class="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0" style="padding: 1rem;padding-bottom: 0" >{{translate('Description')}}</h3>
         {{$permission->description}}
 	</div>
 </body>

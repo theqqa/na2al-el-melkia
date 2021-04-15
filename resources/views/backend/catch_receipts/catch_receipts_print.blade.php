@@ -94,13 +94,13 @@
             <table>
 				@php
 				@endphp
-				<tr><td class="strong small gry-color">{{ __('Representative name') }}: {{$catch_receipt->representative->name}}</td></tr>
-				<tr><td class="strong">{{ __('Payment By') }}: {{$catch_receipt->payment_by}}</td></tr>
-				<tr><td class="gry-color small">{{ __('Price')}}: {{single_price($catch_receipt->price)}}</td></tr>
+				<tr><td class="strong small gry-color">{{ translate('Representative name') }}: {{$catch_receipt->representative->name}}</td></tr>
+				<tr><td class="strong">{{ translate('Payment By') }}: {{$catch_receipt->payment_by}}</td></tr>
+				<tr><td class="gry-color small">{{ translate('Price')}}: {{single_price($catch_receipt->price)}}</td></tr>
 
 			</table>
 		</div>
-<H3 class="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">{{__('Description')}}</H3>
+<H3 class="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">{{translate('Description')}}</H3>
         {{$catch_receipt->description}}
 	</div>
 </body>

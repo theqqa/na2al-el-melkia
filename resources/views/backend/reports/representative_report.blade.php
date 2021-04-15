@@ -225,7 +225,12 @@ $codes=[];
 
            console.log($content);
             $.post('{{ route('send_mail_representative') }}', {_token: AIZ.data.csrf, content_page:$content ,rep_id:$rep}, function(data){
-
+                if(data == 1){
+                    AIZ.plugins.notify('success', '{{ translate('Email send successfully') }}');
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
             });
 
             document.body.innerHTML = originalContents;
