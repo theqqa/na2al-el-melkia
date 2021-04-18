@@ -3874,15 +3874,12 @@ input[type="number"] {
     color: #fff ;
     background-color: #5abc7c;
 }
-.aiz-side-nav-item.mm-active .aiz-side-nav-link.active{
-    color: #fff !important ;
-    background-color: #5abc7c !important;
-}
-.aiz-side-nav-list .aiz-side-nav-item.mm-active{
+
+.aiz-side-nav-link.active{
     background-color: #dff2e5 !important;
     color: rgb(138, 138, 138) !important;
 }
-.aiz-side-nav-list .aiz-side-nav-item.mm-active:hover{
+.aiz-side-nav-link.active:hover{
     background-color:#a2d9b6  !important;
     color: rgb(138, 138, 138) !important;
 }
