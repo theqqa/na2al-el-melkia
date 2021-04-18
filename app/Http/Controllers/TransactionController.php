@@ -31,6 +31,12 @@ class TransactionController extends Controller
             $sort_search = $request->search;
             $transactions = $transactions->where('transaction_id', 'like', '%'.$sort_search.'%');
         }
+
+        if(Auth::user()->user_type == 'staff' &&Auth::user()->staff->role_id==3)
+        {
+            $transactions = $transactions->where('user_id', Auth::user()->id);
+
+        }
         $transactions = $transactions->paginate(15);
         return view('backend.transactions.index', compact('transactions', 'sort_search'));
     }
