@@ -207,7 +207,7 @@ if ($transaction->save()) {
           elseif($request->type==3){
               $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
           }
-          $representative_data->deserved_amount -= RepresentativeHistory::whereRepId($request->representative_id)->last()->deserved_amount_request;
+          $representative_data->deserved_amount -= RepresentativeHistory::whereRepId($request->representative_id)->get()->last()->deserved_amount_request;
 
           $treasury_balance_history= new  RepresentativeHistory();
           $treasury_balance_history->rep_id= $request->representative_id;
