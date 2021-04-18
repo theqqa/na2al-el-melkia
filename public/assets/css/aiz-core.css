@@ -3869,11 +3869,68 @@ input[type="number"] {
 
 .aiz-side-nav-list .aiz-side-nav-link:hover,
 .aiz-side-nav-list .aiz-side-nav-link.level-2-active,
-.aiz-side-nav-list .aiz-side-nav-link.level-3-active,
-.aiz-side-nav-list .aiz-side-nav-link.active {
-    color: #fff !important;
+.aiz-side-nav-list .aiz-side-nav-link.level-3-active
+ {
+    color: #fff ;
     background-color: #5abc7c;
 }
+.aiz-side-nav-item.mm-active .aiz-side-nav-link.active{
+    color: #fff !important ;
+    background-color: #5abc7c !important;
+}
+.aiz-side-nav-link.active{
+    background-color: #dff2e5 !important;
+    color: rgb(138, 138, 138) !important;
+}
+.aiz-side-nav-link.active:hover{
+    background-color:#a2d9b6  !important;
+    color: rgb(138, 138, 138) !important;
+}
+.aiz-side-nav-link:hover{
+    background-color:#a2d9b6  !important;
+    color: rgb(138, 138, 138) !important;
+}
+.aiz-side-nav-link.level-2-active .aiz-side-nav-icon{
+    color: #fff ;
+}
+.aiz-side-nav-list .level-2 .aiz-side-nav-link.active:after {
+    background:  rgb(138, 138, 138) !important;
+    border-color: rgb(138, 138, 138) !important;
+}
+.aiz-side-nav-list .level-2 .aiz-side-nav-link:hover:after{
+    background: #fff !important;
+    border-color:#fff!important;
+}
+.dropdown-item.active, .dropdown-item:hover, .dropdown-item:active{
+    background-color:#0abb75 !important;
+}
+.bootstrap-select .dropdown-toggle:active, .bootstrap-select .dropdown-toggle:focus, .show.bootstrap-select .dropdown-toggle {
+    border-color: #0abb75 !important;
+}
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 188px !important;
+}
+.col-md-3 .form-group .form-control-sm {
+    /* margin-right: 41px; */
+    width: 105px !important;
+    padding: 19px 15px !important;
+    }
+    .bootstrap-select>.dropdown-toggle{
+        width: 71%;
+    }
+    .h6{
+        font-size: 12px !important;
+    }
+   td .btn-soft-danger{
+        border-radius: 100px;
+       }
+    td .btn-soft-success{
+        border-radius: 100px;
+    }
+    span.btn-soft-success{
+        border-radius: 100px;
+        padding: 5px 10px;
+    }
 .aiz-side-nav-list .aiz-side-nav-link:hover,
 .aiz-side-nav-list .aiz-side-nav-link.level-2-active,
 .aiz-side-nav-list .aiz-side-nav-link.level-3-active,
@@ -4567,7 +4624,7 @@ input[type="number"] {
 .bootstrap-select .dropdown-toggle:active,
 .bootstrap-select .dropdown-toggle:focus,
 .show.bootstrap-select .dropdown-toggle {
-    border-color: var(--primary) !important;
+    border-color: #0abb75 !important;
 }
 .bootstrap-select .dropdown-menu .selected span.check-mark {
     right: 12px;
