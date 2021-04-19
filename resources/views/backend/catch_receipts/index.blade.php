@@ -64,6 +64,9 @@
                         <td>{{ ($catch_receipt->payment_by==1)?translate('Cache') :translate('Bank transfer') }}</td>
 
 						<td class="text-right">
+                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit', ['lang'=>env('DEFAULT_LANGUAGE'),$catch_receipt->id] )}}" title="{{ translate('Edit') }}">
+                                <i class="las la-edit"></i>
+                            </a>
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit',$catch_receipt->id )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-eye"></i>
                             </a>

@@ -246,11 +246,15 @@ foreach ($total_1 as $key_1=>$value){
         $business_settings_ownership = BusinessSetting::where('type', 'taam_expenses_ownership')->first();
 
 //        $transactions = Transaction::orderBy('created_at', 'desc');
-        $transaction_owner_count= Transaction::where('type',1)
-            ->orWhere('type', 3);
+        $transaction_owner_count= Transaction::Where(function($query) {
+            $query->where('type',1)
+                ->orWhere('type', 3);
+        });
 
-        $transaction_renewal_count= Transaction::where('type',2)
-            ->orWhere('type', 3);
+        $transaction_renewal_count= Transaction::Where(function($query) {
+            $query->where('type',2)
+                ->orWhere('type', 3);
+        });
         if ($request->has('user_id') && $request->user_id != "null"){
             $user_id = $request->user_id;
             $transaction_owner_count = $transaction_owner_count->where('user_id', $user_id);

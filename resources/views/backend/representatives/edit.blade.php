@@ -12,15 +12,24 @@
             <h5 class="mb-0 h6">{{translate('Representative Information')}}</h5>
         </div>
         <?php
-        $transactions=\App\Models\Transaction::where('representative_id',$representative->id);
-        $ownership=$transactions->orWhere(function($query) {
-            $query->  where('type',1)
-                ->Where('type', 3);
+//        $transactions=\App\Models\Transaction::where('representative_id',$representative->id);
+//        $ownership=$transactions->orWhere(function($query) {
+//            $query->  where('type',1)
+//                ->Where('type', 3);
+//        })->count();
+//        $renewal=$transactions->orWhere(function($query) {
+//            $query->  where('type',2)
+//                ->Where('type', 3);
+//        })->count();
+
+        $ownership=\App\Models\Transaction::where('representative_id',$representative->id)->Where(function($query) {
+            $query->where('type',1)
+                ->orWhere('type', 3);
         })->count();
-        $renewal=$transactions->orWhere(function($query) {
-            $query->  where('type',2)
-                ->Where('type', 3);
-        })->count();
+        $renewal=\App\Models\Transaction::where('representative_id',$representative->id)->Where(function($query) {
+            $query->where('type',2)
+                ->orWhere('type', 3);
+        })->coun
         ?>
         <div class="card-body">
           <form action="{{ route('representatives.update', $representative->id) }}" method="POST">

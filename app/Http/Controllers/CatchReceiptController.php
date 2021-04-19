@@ -114,7 +114,10 @@ if ($catch_receipt->save()) {
      */
     public function show($id)
     {
-        //
+        $rep_lists=Representative::whereActive('1')->get();
+
+        $catch_receipt = CatchReceipt::findOrFail($id);
+        return view('backend.catch_receipts.show', compact('catch_receipt','rep_lists'));
     }
 
     /**
@@ -140,14 +143,39 @@ if ($catch_receipt->save()) {
      */
     public function update(Request $request, $id)
     {
-        $catch_receipt = CatchReceipt::findOrFail($id);
+        $catch_receipt_old = CatchReceipt::findOrFail($id);
 
-        $catch_receipt->date = $request->date;
-        $catch_receipt->representative_id = $request->representative_id;
-        $catch_receipt->price =$request-> price;
-        $catch_receipt->payment_by = $request->payment_by;
-        $catch_receipt->description = $request->description ;
-      if(  $catch_receipt->save()){
+
+        $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+        $treasury_balance->value= $treasury_balance->value-$catch_receipt_old->price ;
+        $treasury_balance->save();
+        $treasury_balance_history_old= TreasuryBalanceHistory::where('catch_receipt_id',$catch_receipt_old->id)->first();
+
+        $treasury_balance_history_old->balance_before= $treasury_balance->value;
+        $treasury_balance_history_old->balance_request=$request->price;
+        $treasury_balance_history_old->balance_after=$treasury_balance->value + $request->price ;
+        $treasury_balance_history_old->save();
+
+        $treasury_balance->value= $treasury_balance->value + $request->price ;
+        $treasury_balance->save();
+        $treasury_balance_history_old= RepresentativeHistory::whereRepId($catch_receipt_old->representative->id)->where('catch_receipt_id',$catch_receipt_old->id)->first();
+        $catch_receipt_old->representative->deserved_amount=  $catch_receipt_old->representative->deserved_amount + $catch_receipt_old->price ;
+        $catch_receipt_old->representative->save();
+
+        $treasury_balance_history_old->deserved_amount_before= $catch_receipt_old->representative->deserved_amount;
+        $treasury_balance_history_old->deserved_amount_after=$catch_receipt_old->representative->deserved_amount - $request->price ;
+        $treasury_balance_history_old->deserved_amount_request=$request->price;
+        $treasury_balance_history_old->save();
+        $catch_receipt_old->representative->deserved_amount=  $catch_receipt_old->representative->deserved_amount - $request->price ;
+        $catch_receipt_old->representative->save();
+
+
+
+        $catch_receipt_old->date = $request->date;
+        $catch_receipt_old->price =$request-> price;
+        $catch_receipt_old->payment_by = $request->payment_by;
+        $catch_receipt_old->description = $request->description ;
+      if(  $catch_receipt_old->save()){
 
             flash(translate('Catch receipt has been updated successfully'))->success();
             return redirect()->route('catch_receipts.index');

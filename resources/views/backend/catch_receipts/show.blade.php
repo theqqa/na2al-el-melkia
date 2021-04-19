@@ -34,11 +34,10 @@
                           <input type="date" placeholder="{{translate('Date')}}" id="date" value="{{ date('Y-m-d',strtotime($catch_receipt->date)) }}" name="date" class="form-control" required>
                       </div>
                   </div>
-                  <input type="hidden" name="representative_id" value="{{$catch_receipt->representative_id}}">
                   <div class="form-group row">
                       <label class="col-sm-3 control-label" for="background_color">{{translate('Representative')}} </label>
                       <div class="col-sm-9">
-                          <select class="form-control aiz-selectpicker" name="representative_id" id="representative_id" data-live-search="true" disabled  required readonly>
+                          <select class="form-control aiz-selectpicker" name="representative_id" id="representative_id" data-live-search="true" required>
                               @foreach ($rep_lists as $val)
                                   <option value="{{ $val->id }}" @if($catch_receipt->representative_id == $val->id  ) selected @endif>{{ $val->name }}</option>
                               @endforeach
@@ -61,10 +60,9 @@
                           <textarea name="description" rows="5" class="form-control">{{$catch_receipt->description}}</textarea>
                       </div>
                   </div>
-
-                  <div class="form-group mb-0 text-right">
-                      <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
-                  </div>
+                    <div class="form-group mb-0 text-right">
+                        <a href="{{route('catch_receipts.index')}}" class="btn btn-primary">{{translate('Show')}}</a>
+                    </div>
                   </form>
               </div>
         </div>
