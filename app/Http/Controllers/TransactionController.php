@@ -111,7 +111,7 @@ class TransactionController extends Controller
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;
         $transaction->user_id = Auth::id();
-        $transaction->timedate = Carbon::now();
+        $transaction->timedate =$request->register_at;
         $transaction->type = $request->type;
         $transaction->notes = $request->notes;
 if ($transaction->save()) {
@@ -191,7 +191,7 @@ if ($transaction->save()) {
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;
         $transaction->user_id = Auth::id();
-        $transaction->timedate =Carbon::now() ;
+        $transaction->timedate =$request->register_at;
         $transaction->type = $request->type;
         $transaction->notes = $request->notes;
       if(  $transaction->save()){

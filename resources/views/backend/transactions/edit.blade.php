@@ -7,7 +7,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-10 mx-auto">
+    <div class="col-sm-10 mx-auto">
         <div class="card">
             <div class="card-body p-0">
 
@@ -36,8 +36,8 @@
                       </div>
                   </div>
                   <div class="form-group row">
-                      <label class="col-lg-3 control-label" for="name">{{translate('Type')}}</label>
-                      <div class="col-lg-9">
+                      <label class="col-sm-3 control-label" for="name">{{translate('Type')}}</label>
+                      <div class="col-sm-9">
                           <select name="type" id="type" class="form-control aiz-selectpicker" required>
                               <option value="1" @if($transaction->type == 1  ) selected @endif >{{translate('Ownership')}}</option>
                               <option value="2" @if($transaction->type == 2  ) selected @endif >{{translate('Renewal')}}</option>
@@ -46,8 +46,14 @@
                       </div>
                   </div>
                   <div class="form-group row">
-                      <label class="col-lg-3 col-from-label">{{translate('Notes')}}</label>
-                      <div class="col-lg-9">
+                      <label class="col-sm-3 col-from-label" for="email">{{translate('Register At')}}</label>
+                      <div class="col-sm-9">
+                          <input type="datetime-local" placeholder="{{translate('Register At')}}" id="register_at" name="register_at" class="form-control" value="{{ date("Y-m-d\TH:i:s",strtotime($transaction->timedate)) }}" required>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-sm-3 col-from-label">{{translate('Notes')}}</label>
+                      <div class="col-sm-9">
                           <textarea name="notes" rows="5" class="form-control">{{$transaction->notes}}</textarea>
                       </div>
                   </div>

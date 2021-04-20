@@ -32,7 +32,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group mb-0">
-                                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
+                                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" autocomplete="off" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -74,6 +74,9 @@
                                     <td>{{ $transaction->transaction_id}}</td>
 
                                     @if ($transaction->type==1)
+                                        @php
+                                            $count_ownership_res[$transaction->representative->name] +=1;
+                                        @endphp
                                     <td>
                                         {{translate("Ownership")}}
                                     </td>
@@ -81,6 +84,9 @@
                                             {{$transaction->representative->transfer_price}}
                                         </td>
                                     @elseif($transaction->type==2)
+                                        @php
+                                            $count_renewal_res[$transaction->representative->name] +=1;
+                                        @endphp
                                      <td>
                                             {{translate("Renewal")}}
                                     </td>
@@ -88,6 +94,10 @@
                                             {{$transaction->representative->renewal_price}}
                                         </td>
                                     @elseif($transaction->type==3)
+                                        @php
+                                            $count_ownership_res[$transaction->representative->name] +=1;
+                                            $count_renewal_res[$transaction->representative->name] +=1;
+                                        @endphp
                                         <td>
                                             {{translate("Both")}}
                                         </td>
@@ -116,13 +126,25 @@
 {{--                            @endif--}}
                         @endforeach
 {{--                        @endforeach--}}
+{{--                            @dd(array_merge_recursive($count_ownership_res,$count_renewal_res),$count_ownership_res,$count_renewal_res)--}}
+
+                            <?php $newtotal=array_merge_recursive($count_ownership_res,$count_renewal_res);  ?>
 
                     </tbody>
                 </table>
                 <div class="aiz-pagination mt-4">
-                    <h6 class="mb-md-0 h6">{{translate("Ownership Count")}}:<span class="btn btn-icon btn-circle  btn-soft-danger"> {{$count_owner}}</span></h6>
-                    <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn btn-icon btn-circle  btn-soft-danger"> {{$count_renewal}}</span></h6>
+                    <h6 class="mb-md-0 h6">{{translate("Ownership Count")}}:<span class="btn   btn-soft-danger"> {{$count_owner}}</span></h6>
+                    <br>
+                    <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn   btn-soft-danger"> {{$count_renewal}}</span></h6>
+<h5>{{translate('User Transaction')}}</h5>
+                    @foreach($newtotal as $newkey=>$newvalue)
+                        @if(!is_array($newvalue))
 
+                            <h6 ><span style="font-weight: bold;color: #0abb75">{{$newkey .'  '}}</span>{{array_key_exists($newkey,$count_ownership_res)?translate("Ownership"):translate("Renewal")}}:<span style="color: red"> {{$newvalue}}</span></h6>
+                        @else
+                            <h6 ><span style="font-weight: bold;color: #0abb75">{{$newkey .'  '}}</span>{{translate("Ownership")}}:<span style="color: red"> {{$newvalue[0]}}  </span>      {{translate("Renewal")}} :<span style="color: red"> {{$newvalue[1]}}</span></h6>
+                        @endif
+                    @endforeach
                 </div>
                 </div>
                 <button class="btn btn-md btn-success "  onClick="printDiv();" id="print_id">   <span  class=" las la-print"> {{ translate('Print') }}</span> </button>

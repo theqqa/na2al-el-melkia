@@ -54,6 +54,8 @@ $initial_treasury_balance=$business_settings->value;
 //        {
             $total_1[]=0;
         $sum[]=0;
+        $count_ownership_res[]=0;
+        $count_renewal_res[]=0;
         $count_owner=0;
         $count_renewal=0;
         $total_pre=0;
@@ -76,12 +78,16 @@ $initial_treasury_balance=$business_settings->value;
                     $count_owner+=1;
                     $total_1[$key]=$transaction->representative->transfer_price ;
                     $total_all+=$transaction->representative->transfer_price ;
+                    $count_ownership_res[$transaction->representative->name] =0;
+
                 }
                 elseif($transaction->type==2){
                     $count_renewal+=1;
 
                     $total_1[$key] =$transaction->representative->renewal_price ;
                     $total_all+=$transaction->representative->renewal_price ;
+                    $count_renewal_res[$transaction->representative->name] =0;
+
 
                 }elseif($transaction->type==3){
                     $count_renewal+=1;
@@ -89,22 +95,28 @@ $initial_treasury_balance=$business_settings->value;
 
                     $total_1[$key] =$transaction->representative->renewal_price+$transaction->representative->transfer_price ;
                     $total_all+=$transaction->representative->renewal_price+$transaction->representative->transfer_price ;
+                    $count_ownership_res[$transaction->representative->name] =0;
+                    $count_renewal_res[$transaction->representative->name] =0 ;
+
+
                 }
         }
+        unset($count_renewal_res[0]);
+        unset($count_ownership_res[0]);
+
 foreach ($total_1 as $key_1=>$value){
     if($key_1 !=0)
     $sum[$key_1] =$sum[$key_1-1]+$value;
     else
         $sum[$key_1]=$value;
 }
-
-        return view('backend.reports.users_transactions_report', compact('total_pre','initial_treasury_balance','count_renewal','count_owner','transactions','sum','user_id','date_range','users','total_1','total_all','transactions_count'));
+        return view('backend.reports.users_transactions_report', compact('count_ownership_res','count_renewal_res','total_pre','initial_treasury_balance','count_renewal','count_owner','transactions','sum','user_id','date_range','users','total_1','total_all','transactions_count'));
     }
     public function users_representative_report(Request $request)
     {
         $rep_id =null;
         $rep=Representative::all();
-                $date_range=null;
+        $date_range=null;
         $paid_hist=0;
         $count_ownership=0;
         $count_renewal=0;

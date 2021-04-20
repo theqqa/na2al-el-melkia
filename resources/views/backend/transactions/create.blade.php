@@ -12,8 +12,8 @@
                 <form action="{{ route('transactions.store') }}" method="POST">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-3 control-label" for="name">{{translate('Transaction Id')}}</label>
-                        <div class="col-sm-9">
+                        <label class="col-lg-3 control-label" for="name">{{translate('Transaction Id')}}</label>
+                        <div class="col-lg-9">
                             <input type="text" placeholder="{{translate('Transaction Id')}}" id="name" name="transaction_id" class="form-control {{ $errors->has('transaction_id') ? ' is-invalid' : '' }}" required>
                             @if ($errors->has('transaction_id'))
                                 <span class="invalid-feedback" role="alert">
@@ -24,8 +24,8 @@
 
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 control-label" for="background_color">{{translate('Representative')}} </label>
-                        <div class="col-sm-9">
+                        <label class="col-lg-3 control-label" for="background_color">{{translate('Representative')}} </label>
+                        <div class="col-lg-9">
                             <select class="form-control aiz-selectpicker" name="representative_id" id="representative_id" data-live-search="true" required>
                                 @foreach ($rep_lists as $val)
                                     <option value="{{ $val->id }}">{{ $val->name }}</option>
@@ -41,6 +41,13 @@
                                 <option value="2">{{translate('Renewal')}}</option>
                                 <option value="3">{{translate('Both')}}</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-from-label" for="email">{{translate('Register At')}}</label>
+                        <div class="col-lg-9">
+                            <input type="datetime-local" placeholder="{{translate('Register At')}}" id="register_at" name="register_at" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row">
