@@ -83,9 +83,9 @@
                                 <i class="las la-user"></i>
                             </a>
 
-{{--                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">--}}
-{{--                                <i class="las la-trash"></i>--}}
-{{--                            </a>--}}
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">
+                                <i class="las la-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

@@ -236,18 +236,29 @@ if ($transaction->save()) {
      */
     public function destroy($id)
     {
-//        $flash_deal = FlashDeal::findOrFail($id);
-//        foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product) {
-//            $flash_deal_product->delete();
-//        }
-//
-//        foreach ($flash_deal->flash_deal_translations as $key => $flash_deal_translation) {
-//            $flash_deal_translation->delete();
-//        }
-//
-//        FlashDeal::destroy($id);
-//        flash(translate('FlashDeal has been deleted successfully'))->success();
-//        return redirect()->route('flash_deals.index');
+        $transaction = Transaction::findOrFail($id);
+        $representative_data= $transaction->representative;
+        $total=0;
+        if($transaction->type==1)
+        {
+            $total += $representative_data->transfer_price;
+        }
+        elseif($transaction->type==2){
+            $total  += $representative_data->renewal_price;
+        }
+        elseif($transaction->type==3){
+            $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
+        }
+        $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->get()->last();
+        $treasury_balance_history->delete();
+
+        $representative_data->deserved_amount -=$total;
+        $representative_data->save();
+
+
+        Transaction::destroy($id);
+        flash(translate('Transaction has been deleted successfully'))->success();
+        return redirect()->route('transactions.index');
     }
 
     public function update_status(Request $request)
