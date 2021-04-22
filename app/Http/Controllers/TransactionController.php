@@ -110,6 +110,7 @@ class TransactionController extends Controller
         $transaction = new Transaction();
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;
+        $transaction->sub_representative = $request->sub_representative;
         $transaction->user_id = Auth::id();
         $transaction->timedate =$request->register_at;
         $transaction->type = $request->type;
@@ -187,6 +188,7 @@ if ($transaction->save()) {
             'transaction_id' => 'required|unique:transactions,transaction_id,'.$id,
         ])->validate();
         $transaction = Transaction::findOrFail($id);
+        $transaction->sub_representative = $request->sub_representative;
 
         $transaction->transaction_id = $request->transaction_id;
         $transaction->representative_id = $request->representative_id;

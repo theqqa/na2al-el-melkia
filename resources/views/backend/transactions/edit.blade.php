@@ -46,6 +46,12 @@
                       </div>
                   </div>
                   <div class="form-group row">
+                      <label class="col-lg-3 col-from-label" for="email">{{translate('Sub Representative')}}</label>
+                      <div class="col-lg-9">
+                          <input type="text" placeholder="{{translate('Sub Representative')}}" id="sub_representative" name="sub_representative" class="form-control" value="{{$transaction->sub_representative}}" required>
+                      </div>
+                  </div>
+                  <div class="form-group row">
                       <label class="col-sm-3 col-from-label" for="email">{{translate('Register At')}}</label>
                       <div class="col-sm-9">
                           <input type="datetime-local" placeholder="{{translate('Register At')}}" id="register_at" name="register_at" class="form-control" value="{{ date("Y-m-d\TH:i:s",strtotime($transaction->timedate)) }}" required>

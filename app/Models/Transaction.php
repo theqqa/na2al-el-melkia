@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property \Illuminate\Support\Carbon $timedate
  * @property string|null $transaction_id
+ * @property string|null $sub_representative
+
  * @property int|null $representative_id
  * @property int|null $user_id
  * @property int $type

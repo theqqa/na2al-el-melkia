@@ -155,17 +155,19 @@ $codes=[];
           </tr>
           @if($loop->last)
               <tr style="font-weight: bold">
-                  <td colspan="5">{{translate('Ownership Count')}}</td>
+                  <td colspan="6">{{translate('Ownership Count')}}</td>
                   <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small "> {{$count_ownership}}</span> </td>
 
               </tr>
               <tr style="font-weight: bold">
-                  <td colspan="5">{{translate('Renewal Count')}}</td>
+                  <td colspan="6">{{translate('Renewal Count')}}</td>
                   <td colspan="2" class="btn-soft-success aiz-side-nav-text"> <span class="small  "> {{$count_renewal}}</span> </td>
+
+
 
               </tr>
               <tr style="font-weight: bold">
-                  <td colspan="5">{{translate('Total2')}}</td>
+                  <td colspan="6">{{translate('Total2')}}</td>
                   <td colspan="2" class="btn-soft-success aiz-side-nav-text"> {{$total_2}} <span class="small"> ريال</span> </td>
 
               </tr>

@@ -56,6 +56,8 @@
 
                             <th>{{ translate('User Name') }}</th>
                             <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
+                            <th data-breakpoints="lg">{{ translate('Sub Representative') }}</th>
+
                             <th>{{translate('Transactions Id')}}</th>
                             <th data-breakpoints="lg">{{ translate('Type') }}</th>
                             <th data-breakpoints="lg">{{ translate('Price') }}</th>
@@ -71,6 +73,8 @@
 
                                     <td >{{ $transaction->user->name }}</td>
                                     <td >{{$transaction->representative->name}}</td>
+                                    <td >{{ $transaction->sub_representative }}</td>
+
                                     <td>{{ $transaction->transaction_id}}</td>
 
                                     @if ($transaction->type==1)

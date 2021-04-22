@@ -43,7 +43,12 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-from-label" for="email">{{translate('Sub Representative')}}</label>
+                        <div class="col-lg-9">
+                            <input type="text" placeholder="{{translate('Sub Representative')}}" id="sub_representative" name="sub_representative" class="form-control" required>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-from-label" for="email">{{translate('Register At')}}</label>
                         <div class="col-lg-9">
