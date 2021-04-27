@@ -64,6 +64,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::resource('transactions', 'TransactionController');
     Route::get('/transactions/edit/{id}', 'TransactionController@edit')->name('transactions.edit');
     Route::get('/transactions/destroy/{id}', 'TransactionController@destroy')->name('transactions.destroy');
+    Route::get('/transaction/uploaded/index', 'TransactionController@uploaded_file_index')->name('transaction.uploaded_file_index');
+    Route::get('/transaction/file/download', 'TransactionController@download_file')->name('transaction.download_file');
+
     Route::get('/transaction/uploaded', 'TransactionController@uploaded_file')->name('transaction.uploaded_file');
     Route::post('/transaction/post/uploaded', 'TransactionController@post_uploaded_file')->name('transaction.post.uploaded_file');
     Route::get('/transaction/user/board', 'TransactionController@transactions_user_board')->name('transactions.user.board');

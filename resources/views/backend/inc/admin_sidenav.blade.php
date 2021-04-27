@@ -268,6 +268,16 @@
                         </a>
                     </li>
                 @endif
+                    @if(Auth::user()->user_type == 'admin' || in_array('5', json_decode(Auth::user()->staff->role->permissions)))
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('transaction.uploaded_file_index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['transaction.uploaded_file_index','transaction.uploaded_file', 'transactions.create', 'transactions.edit'])}}">
+                                <i class="las la-file-pdf aiz-side-nav-icon"></i>
+
+                                <span class="aiz-side-nav-text">{{ translate('Files Transaction') }}</span>
+                            </a>
+                        </li>
+                    @endif
                 @if(Auth::user()->user_type == 'admin' || in_array('6', json_decode(Auth::user()->staff->role->permissions)))
 
                     <li class="aiz-side-nav-item">

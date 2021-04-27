@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessSetting;
 use App\Models\Representative;
 use App\Models\RepresentativeHistory;
 use App\Models\Transaction;
+use App\Staff;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +17,7 @@ use App\FlashDealProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
+use ZipArchive;
 class TransactionController extends Controller
 {
     /**
@@ -58,21 +60,17 @@ class TransactionController extends Controller
     }
     public function post_uploaded_file(Request $request)
     {
+
        $files= $request->tran_file;
         if($request->hasFile('tran_file')) {
             foreach ($files as $key=>$val)
             {
-                $file_name = explode(".", $val->getClientOriginalName());
-                if (!empty($file_name[0])) {
-                    $transaction = Transaction::where('transaction_id', 'like', '%' . $file_name[0] . '%')->first();
+
+                    $transaction = Transaction::where('id', $request->transaction_id)->first();
                     if (!empty($transaction)){
-                        $transaction->files = $val->store('uploads/transactions/pdf');
-                    if ($transaction->update()) {
 
+                        $tran_files[] = $val->store('uploads/transactions/'.$request->transaction_id);
 
-                        flash(translate('Transaction Files has been inserted successfully'))->success();
-//                        return redirect()->route('transactions.index');
-                    }
 //                    else {
 //                        flash(translate('Something went wrong'))->error();
 //                        return back();
@@ -82,12 +80,19 @@ class TransactionController extends Controller
                         flash(translate('Can\'t find Related Transactions ,Make sure File name'))->error();
 //                        return back();
                     }
-                }
+
 //
 //                flash(translate('Something went wrong'))->error();
 //                return back();
             }
-            return redirect()->route('transactions.index');
+            $transaction->files=implode(',',$tran_files);
+            if ($transaction->update()) {
+
+
+                flash(translate('Transaction Files has been inserted successfully'))->success();
+//                        return redirect()->route('transactions.index');
+            }
+            return redirect()->route('transactions.file_index');
 
         }
 
@@ -280,4 +285,34 @@ if ($transaction->save()) {
         Auth::login($user);
         return redirect()->route('admin.dashboard');
     }
+    public function uploaded_file_index(Request $request)
+    {
+        $user_id =null;
+        $users = Staff::whereRoleId('3')->get();
+        $transactions = Transaction::orderBy('created_at', 'desc');
+        if ($request->has('user_id') && $request->user_id != "null"){
+            $user_id = $request->user_id;
+            $transactions = $transactions->where('user_id', $user_id);
+        }
+        $transactions = $transactions->paginate(15);
+
+        return view('backend.transactions.file_index', compact('user_id','transactions', 'users'));
+    }
+    public function download_file(Request $request)
+    {
+        $files = Transaction::whereId($request->train_id)->first()->files;
+        $files=explode(',',$files);
+        $zip_name = $request->train_id.".zip"; // Zip name
+        $zip = new ZipArchive();
+        $zip->open($zip_name, ZipArchive::CREATE);
+        foreach ($files as $file) {
+            $zip->addFile($file);
+        }
+        $zip->close();
+        header('Content-Type: application/zip');
+        header('Content-disposition: attachment; filename='.$zip_name);
+        header('Content-Length: ' . filesize($zip_name));
+        readfile($zip_name);
+    }
+
 }

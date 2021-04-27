@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction query()
  *  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereId($value)
+
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereRepresentativeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereUpdatedAt($value)
  * @mixin \Eloquent

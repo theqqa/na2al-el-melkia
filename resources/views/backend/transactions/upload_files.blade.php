@@ -6,18 +6,20 @@
         <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                  <h5 class="mb-0 h6">{{translate('Treasury Balance')}}</h5>
+                  <h5 class="mb-0 h6">{{translate('Upload File For -').$_GET['transaction_id']}}</h5>
               </div>
               <div class="card-body">
                   <form class="form-horizontal" action="{{ route('transaction.post.uploaded_file') }}" method="POST" enctype="multipart/form-data">
                   	@csrf
                     <div class="form-group row">
-                        <label class="col-lg-3 control-label">{{ translate('Upload File') }}</label>
+                        <label class="col-lg-3 control-label">{{ translate('Upload File')}}</label>
                         <div class="col-lg-9">
 
                             <div class="custom-file">
 {{--                                <label class="custom-file-label">--}}
-                                    <input type="file" name="tran_file[]"  multiple accept="application/pdf" required>
+                                <input type="hidden" name="transaction_id"   value="{{$_GET['transaction_id']}}" required>
+
+                                <input type="file" name="tran_file[]"  multiple  required>
 {{--                                    <span class="custom-file-name">{{ translate('Upload Files')}}</span>--}}
 {{--                                </label>--}}
                             </div>
