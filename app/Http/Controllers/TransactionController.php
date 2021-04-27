@@ -69,7 +69,7 @@ class TransactionController extends Controller
                     $transaction = Transaction::where('id', $request->transaction_id)->first();
                     if (!empty($transaction)){
 
-                        $tran_files[] = $val->store('uploads/transactions/'.$request->transaction_id);
+                        $tran_files[] = $val->store($request->transaction_id);
 
 //                    else {
 //                        flash(translate('Something went wrong'))->error();
@@ -92,7 +92,7 @@ class TransactionController extends Controller
                 flash(translate('Transaction Files has been inserted successfully'))->success();
 //                        return redirect()->route('transactions.index');
             }
-            return redirect()->route('transactions.file_index');
+            return redirect()->route('transaction.uploaded_file_index');
 
         }
 
@@ -256,7 +256,7 @@ if ($transaction->save()) {
         elseif($transaction->type==3){
             $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
         }
-        $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->get()->last();
+        $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->get();
         $treasury_balance_history->delete();
 
         $representative_data->deserved_amount -=$total;
