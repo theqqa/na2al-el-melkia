@@ -66,7 +66,7 @@
                     <div class="form-group mb-0 text-right">
                         <a href="{{route('transactions.index')}}" class="btn btn-primary">{{translate('Show')}}</a>
 
-                        {{--                        <button type="submit" onclick="this.disabled = true" class="btn btn-primary">{{translate('Save')}}</button>--}}
+                        {{--                        <button type="submit"  class="btn btn-primary">{{translate('Save')}}</button>--}}
                     </div>
                   </form>
               </div>

@@ -161,7 +161,7 @@ class ReportController extends Controller
                 $codes[] = $val->catchReceipt->code;
 
             elseif (!empty($val->transaction_id))
-                $codes[] = !empty($val->transaction)?$val->transaction->transaction_id:dd($val);
+                $codes[] = !empty($val->transaction)?$val->transaction->transaction_id:'';
 
 
         }

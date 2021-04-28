@@ -98,6 +98,7 @@ $count_ownership =0;
 $count_renewal =0;
 $total_2=0;
 $codes=[];
+$total_balance=!empty($rep->initial_balance)?$rep->initial_balance:0;
 ?>
   @foreach ($rep_hists as $key => $val)
 
@@ -150,8 +151,15 @@ $codes=[];
                   <td>{{ $val->deserved_amount_request}}</td>
 
               @endif
+{{--              $total_balance+= $val->deserved_amount_reques--}}
+              @if(!empty($val->catch_receipt_id))
 
-              <td>{{ $val->deserved_amount_after}}</td>
+              <td>{{ $total_balance-= $val->deserved_amount_request}}</td>
+              @elseif(!empty($val->transaction_id))
+                            <td>{{ $total_balance+= $val->deserved_amount_request}}</td>
+
+              @endif
+
           </tr>
           @if($loop->last)
               <tr style="font-weight: bold">
