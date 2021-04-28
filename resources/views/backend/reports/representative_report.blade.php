@@ -74,7 +74,7 @@
                     <h5 class="mb-md-0 h6 col-6 ">{{translate('Paid Balance')}} : {{ $paid_hist }} <span class="small">ريال</span></h5>
 
                     @if($pre_total !=null)
-                        <h5 class="mb-md-0 h6 col-6 ">{{translate('Previous Balance')}} : {{$pre_total-> deserved_amount_after }} <span class="small">ريال</span></h5>
+                        <h5 class="mb-md-0 h6 col-6 ">{{translate('Previous Balance')}} : {{$pre_total_balance+$rep->initial_balance }} <span class="small">ريال</span></h5>
 
                     @endif
                     <br>
