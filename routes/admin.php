@@ -66,6 +66,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/transactions/destroy/{id}', 'TransactionController@destroy')->name('transactions.destroy');
     Route::get('/transaction/uploaded/index', 'TransactionController@uploaded_file_index')->name('transaction.uploaded_file_index');
     Route::get('/transaction/file/download', 'TransactionController@download_file')->name('transaction.download_file');
+    Route::post('transaction_approved', 'TransactionController@update_status')->name('transaction.approved');
 
     Route::get('/transaction/uploaded', 'TransactionController@uploaded_file')->name('transaction.uploaded_file');
     Route::post('/transaction/post/uploaded', 'TransactionController@post_uploaded_file')->name('transaction.post.uploaded_file');
@@ -79,6 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     //catch
       Route::resource('catch_receipts', 'CatchReceiptController');
     Route::get('catch_receipt/{catch_receipt_id}', 'CatchReceiptController@catch_receipt_download')->name('catch_receipt.download');
+    Route::post('catch_receipt_approved', 'CatchReceiptController@update_status')->name('catch_receipt.approved');
 
     //permission exchange
     Route::resource('permission_exchanges', 'PermissionExchangeController');

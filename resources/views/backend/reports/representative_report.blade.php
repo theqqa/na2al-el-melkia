@@ -110,7 +110,7 @@ $codes=[];
               @if(!empty($val->catch_receipt_id))
               <td>
                   <a href="{{route('catch_receipts.edit',$val->catchReceipt->id )}}">{{translate('Catch Receipt')}}</a></td>
-              @elseif(!empty($val->transaction_id))
+              @elseif(!empty($val->transaction_id)&&!empty($val->transaction))
                   @if ($val->transaction->type==1)
 <?php
                       $count_ownership += 1;

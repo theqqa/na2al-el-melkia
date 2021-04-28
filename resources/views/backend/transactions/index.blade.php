@@ -48,6 +48,9 @@
                     <th data-breakpoints="lg">{{ translate('Type') }}</th>
                     <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Status') }}</th>
+
+                    <th data-breakpoints="lg">{{ translate('Approved') }}</th>
+
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>
             </thead>
@@ -80,17 +83,27 @@
                                 <span class="btn-danger">{{     translate('No file uploaded')}}</span>
                             </td>
 @endif
+                        <td>
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input  @if($transaction-> approved==0)onchange="update_approved(this)"  @else disabled  @endif   value="{{ $transaction->id }}" type="checkbox" <?php if($transaction->approved == 1) echo "checked";?> >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
 						<td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('transactions.edit', ['id'=>$transaction->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                            @if($transaction->approved==0)
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  href="{{route('transactions.edit', ['id'=>$transaction->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-edit"></i>
                             </a>
+                            @endif
                             <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('transactions.user.board', ['user_id'=>$transaction->user_id] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-user"></i>
                             </a>
+                                @if($transaction->approved==0)
 
                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">
                                 <i class="las la-trash"></i>
                             </a>
+                                @endif
                         </td>
                     </tr>
                 @endforeach
@@ -142,6 +155,26 @@
             $.post('{{ route('flash_deals.update_featured') }}', {_token:'{{ csrf_token() }}', id:el.value, featured:featured}, function(data){
                 if(data == 1){
                     location.reload();
+                }
+                else{
+                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                }
+            });
+        }
+
+        function update_approved(el){
+            if(el.checked){
+                var status = 1;
+            }
+            else{
+                var status = 0;
+            }
+            $.post('{{ route('transaction.approved') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+                if(data == 1){
+
+                    AIZ.plugins.notify('success', '{{ translate('transaction updated successfully') }}');
+                    location.reload()
+
                 }
                 else{
                     AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');

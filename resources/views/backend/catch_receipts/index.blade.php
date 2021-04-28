@@ -49,6 +49,8 @@
                     <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
                     <th data-breakpoints="lg">{{ translate('Price') }}</th>
                     <th data-breakpoints="lg">{{ translate('Payment by') }}</th>
+                    <th data-breakpoints="lg">{{ translate('Approved') }}</th>
+
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>
             </thead>
@@ -62,77 +64,104 @@
                         <td>{{ $catch_receipt->representative->name }}</td>
                         <td>{{ $catch_receipt->price}}</td>
                         <td>{{ ($catch_receipt->payment_by==1)?translate('Cache') :translate('Bank transfer') }}</td>
-
+                        <td>
+                            <label class="aiz-switch aiz-switch-success mb-0">
+                                <input  @if($catch_receipt-> approved==0)onchange="update_approved(this)"  @else disabled  @endif   value="{{ $catch_receipt->id }}" type="checkbox" <?php if($catch_receipt->approved == 1) echo "checked";?> >
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
 						<td class="text-right">
-                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit', ['lang'=>env('DEFAULT_LANGUAGE'),$catch_receipt->id] )}}" title="{{ translate('Edit') }}">
-                                <i class="las la-edit"></i>
-                            </a>
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit',$catch_receipt->id )}}" title="{{ translate('Edit') }}">
-                                <i class="las la-eye"></i>
-                            </a>
-                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{ route('catch_receipt.download', $catch_receipt->id) }}" title="{{ translate('Download Catch Receipt') }}">
-                                <i class="las la-download"></i>
-                            </a>
+@if($catch_receipt-> approved==0)
+<a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit', ['lang'=>env('DEFAULT_LANGUAGE'),$catch_receipt->id] )}}" title="{{ translate('Edit') }}">
+   <i class="las la-edit"></i>
+</a>
+                            @endif
+<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit',$catch_receipt->id )}}" title="{{ translate('Edit') }}">
+   <i class="las la-eye"></i>
+</a>
+<a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{ route('catch_receipt.download', $catch_receipt->id) }}" title="{{ translate('Download Catch Receipt') }}">
+   <i class="las la-download"></i>
+</a>
 {{--                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $catch_receipt->id)}}" title="{{ translate('Delete') }}">--}}
 {{--                                <i class="las la-trash"></i>--}}
 {{--                            </a>--}}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="clearfix">
-            <div class="pull-right">
-                {{ $catch_receipts->appends(request()->input())->links() }}
-            </div>
-        </div>
-    </div>
+</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+<div class="clearfix">
+<div class="pull-right">
+{{ $catch_receipts->appends(request()->input())->links() }}
+</div>
+</div>
+</div>
 </div>
 
 @endsection
 
 @section('modal')
-    @include('modals.delete_modal')
+@include('modals.delete_modal')
 @endsection
 
 @section('script')
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        function sort_sellers(el){
-            $('#sort_sellers').submit();
-        }
+function sort_sellers(el){
+$('#sort_sellers').submit();
+}
 
-        function update_flash_deal_status(el){
-            if(el.checked){
-                var status = 1;
-            }
-            else{
-                var status = 0;
-            }
-            $.post('{{ route('flash_deals.update_status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
-                if(data == 1){
-                    location.reload();
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-        function update_flash_deal_feature(el){
-            if(el.checked){
-                var featured = 1;
-            }
-            else{
-                var featured = 0;
-            }
-            $.post('{{ route('flash_deals.update_featured') }}', {_token:'{{ csrf_token() }}', id:el.value, featured:featured}, function(data){
-                if(data == 1){
-                    location.reload();
-                }
-                else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                }
-            });
-        }
-    </script>
+function update_flash_deal_status(el){
+if(el.checked){
+var status = 1;
+}
+else{
+var status = 0;
+}
+$.post('{{ route('flash_deals.update_status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+if(data == 1){
+location.reload();
+}
+else{
+AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+}
+});
+}
+function update_flash_deal_feature(el){
+if(el.checked){
+var featured = 1;
+}
+else{
+var featured = 0;
+}
+$.post('{{ route('flash_deals.update_featured') }}', {_token:'{{ csrf_token() }}', id:el.value, featured:featured}, function(data){
+if(data == 1){
+location.reload();
+}
+else{
+AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+}
+});
+}
+function update_approved(el){
+if(el.checked){
+var status = 1;
+}
+else{
+var status = 0;
+}
+$.post('{{ route('catch_receipt.approved') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+if(data == 1){
+
+AIZ.plugins.notify('success', '{{ translate('catch receipt updated successfully') }}');
+location.reload()
+
+}
+else{
+AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+}
+});
+}
+
+</script>
 @endsection
