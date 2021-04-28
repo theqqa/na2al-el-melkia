@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $price
  * @property int|null $representative_id
  * @property int|null $code
-
+ * @property int $approved
  * @property string|null $payment_by
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
