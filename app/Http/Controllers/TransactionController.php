@@ -140,7 +140,10 @@ if ($transaction->save()) {
      */
     public function show($id)
     {
-        //
+        $rep_lists=Representative::whereActive('1')->get();
+
+        $transaction = Transaction::findOrFail($id);
+        return view('backend.transactions.show', compact('transaction','rep_lists'));
     }
 
     /**
