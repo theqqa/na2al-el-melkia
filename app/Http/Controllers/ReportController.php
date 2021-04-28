@@ -121,6 +121,7 @@ class ReportController extends Controller
         $code_id = null;
         $pre_total = null;
         $codes = [];
+        $pre_total_balance=0;
         $rep_hists = RepresentativeHistory::orderBy('created_at', 'asc');
 
         if ($request->has('rep_id') && $request->rep_id != "null") {
@@ -147,11 +148,22 @@ class ReportController extends Controller
             $rep_hists = $rep_hists->whereDate('created_at', '<=', $date_range1[1]);
             $pre_total = RepresentativeHistory::whereDate('created_at', '<', $date_range1[0]);
             if ($request->has('rep_id') && $request->rep_id != "null") {
-                $pre_total = $pre_total->where('rep_id', $request->rep_id)->get()->last();
+                $pre_total = $pre_total->where('rep_id', $request->rep_id)->get();
             } else {
-                $pre_total = $pre_total->get()->last();
+                $pre_total = $pre_total->get();
 
             }
+            foreach ($pre_total as $key_1 => $val_1){
+                if(!empty($val_1->catch_receipt_id))
+
+             $pre_total_balance-= $val_1->deserved_amount_request;
+                elseif(!empty($val_1->transaction_id)){
+                    $pre_total_balance+= $val_1->deserved_amount_request;
+
+                }
+
+            }
+
 
         }
         $rep_hists = $rep_hists->get();
@@ -162,14 +174,15 @@ class ReportController extends Controller
 
             elseif (!empty($val->transaction_id))
 
-                $codes[] = !empty($val->transaction)?$val->transaction->transaction_id:dd($val);
+                $codes[] = !empty($val->transaction)?$val->transaction->transaction_id:'';
+
 
 
 
         }
 
         $codes = array_filter($codes);
-        return view('backend.reports.representative_report', compact('code_id', 'count_ownership', 'codes', 'pre_total', 'count_renewal', 'paid_hist', 'rep_hists', 'rep_id', 'date_range', 'rep'));
+        return view('backend.reports.representative_report', compact('pre_total_balance','code_id', 'count_ownership', 'codes', 'pre_total', 'count_renewal', 'paid_hist', 'rep_hists', 'rep_id', 'date_range', 'rep'));
     }
 
     public function catch_receipts_report(Request $request)

@@ -49,7 +49,6 @@
                     <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
                     <th data-breakpoints="lg">{{ translate('Price') }}</th>
                     <th data-breakpoints="lg">{{ translate('Payment by') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Approved') }}</th>
 
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>
@@ -64,18 +63,12 @@
                         <td>{{ $catch_receipt->representative->name }}</td>
                         <td>{{ $catch_receipt->price}}</td>
                         <td>{{ ($catch_receipt->payment_by==1)?translate('Cache') :translate('Bank transfer') }}</td>
-                        <td>
-                            <label class="aiz-switch aiz-switch-success mb-0">
-                                <input  @if($catch_receipt-> approved==0)onchange="update_approved(this)"  @else disabled  @endif   value="{{ $catch_receipt->id }}" type="checkbox" <?php if($catch_receipt->approved == 1) echo "checked";?> >
-                                <span class="slider round"></span>
-                            </label>
-                        </td>
+
 						<td class="text-right">
-@if($catch_receipt-> approved==0)
+
 <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit', ['lang'=>env('DEFAULT_LANGUAGE'),$catch_receipt->id] )}}" title="{{ translate('Edit') }}">
    <i class="las la-edit"></i>
 </a>
-                            @endif
 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.show',$catch_receipt->id )}}" title="{{ translate('show') }}">
    <i class="las la-eye"></i>
 </a>

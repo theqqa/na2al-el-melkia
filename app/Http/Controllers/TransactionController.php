@@ -122,6 +122,28 @@ class TransactionController extends Controller
         $transaction->notes = $request->notes;
 if ($transaction->save()) {
 
+        $representative_data= $transaction->representative;
+        $total=0;
+        if($request->type==1)
+        {
+            $total += $representative_data->transfer_price;
+        }
+        elseif($request->type==2){
+            $total  += $representative_data->renewal_price;
+        }
+        elseif($request->type==3){
+            $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
+        }
+        $treasury_balance_history= new  RepresentativeHistory();
+        $treasury_balance_history->rep_id= $transaction->representative_id;
+        $treasury_balance_history->transaction_id= $transaction->id;
+        $treasury_balance_history->deserved_amount_before= $representative_data->deserved_amount;
+        $treasury_balance_history->deserved_amount_after=$representative_data->deserved_amount + $total ;
+        $treasury_balance_history->deserved_amount_request=$total;
+        $treasury_balance_history->save();
+
+        $representative_data->deserved_amount +=$total;
+        $representative_data->save();
 
             flash(translate('Transaction has been inserted successfully'))->success();
             return redirect()->route('transactions.index');
@@ -183,28 +205,28 @@ if ($transaction->save()) {
         $transaction->type = $request->type;
         $transaction->notes = $request->notes;
       if(  $transaction->save()){
-//          $representative_data= $transaction->representative;
-//          $total=0;
-//          if($request->type==1)
-//          {
-//              $total += $representative_data->transfer_price;
-//          }
-//          elseif($request->type==2){
-//              $total  += $representative_data->renewal_price;
-//          }
-//          elseif($request->type==3){
-//              $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
-//          }
-//          $representative_data->deserved_amount -= RepresentativeHistory::whereRepId($request->representative_id)->where('transaction_id',$transaction->id)->get()->last()->deserved_amount_request;
-//
-//          $treasury_balance_history= RepresentativeHistory::whereRepId($request->representative_id)->where('transaction_id',$transaction->id)->get()->last();
-//          $treasury_balance_history->deserved_amount_before= $representative_data->deserved_amount;
-//          $treasury_balance_history->deserved_amount_after=$representative_data->deserved_amount + $total ;
-//          $treasury_balance_history->deserved_amount_request=$total;
-//          $treasury_balance_history->save();
-//
-//          $representative_data->deserved_amount +=$total;
-//          $representative_data->save();
+          $representative_data= $transaction->representative;
+          $total=0;
+          if($request->type==1)
+          {
+              $total += $representative_data->transfer_price;
+          }
+          elseif($request->type==2){
+              $total  += $representative_data->renewal_price;
+          }
+          elseif($request->type==3){
+              $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
+          }
+          $representative_data->deserved_amount -= RepresentativeHistory::whereRepId($request->representative_id)->where('transaction_id',$transaction->id)->first()->deserved_amount_request;
+
+          $treasury_balance_history= RepresentativeHistory::whereRepId($request->representative_id)->where('transaction_id',$transaction->id)->first();
+          $treasury_balance_history->deserved_amount_before= $representative_data->deserved_amount;
+          $treasury_balance_history->deserved_amount_after=$representative_data->deserved_amount + $total ;
+          $treasury_balance_history->deserved_amount_request=$total;
+          $treasury_balance_history->save();
+
+          $representative_data->deserved_amount +=$total;
+          $representative_data->save();
             flash(translate('Transaction has been updated successfully'))->success();
             return redirect()->route('transactions.index');
         }
@@ -224,23 +246,23 @@ if ($transaction->save()) {
     {
         $transaction = Transaction::findOrFail($id);
 
+        $representative_data= $transaction->representative;
+        $total=0;
+        if($transaction->type==1)
+        {
+            $total += $representative_data->transfer_price;
+        }
+        elseif($transaction->type==2){
+            $total  += $representative_data->renewal_price;
+        }
+        elseif($transaction->type==3){
+            $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
+        }
+        $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->delete();
 
-//        $representative_data= $transaction->representative;
-//        $total=0;
-//        if($transaction->type==1)
-//        {
-//            $total += $representative_data->transfer_price;
-//        }
-//        elseif($transaction->type==2){
-//            $total  += $representative_data->renewal_price;
-//        }
-//        elseif($transaction->type==3){
-//            $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
-//        }
-//        $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->delete();
-//
-//        $representative_data->deserved_amount -=$total;
-//        $representative_data->save();
+        $representative_data->deserved_amount -=$total;
+        $representative_data->save();
+
 
 
         Transaction::destroy($id);

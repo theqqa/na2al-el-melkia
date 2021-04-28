@@ -49,7 +49,6 @@
                     <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Status') }}</th>
 
-                    <th data-breakpoints="lg">{{ translate('Approved') }}</th>
 
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>
@@ -83,30 +82,24 @@
                                 <span class="btn-danger">{{     translate('No file uploaded')}}</span>
                             </td>
 @endif
-                        <td>
-                            <label class="aiz-switch aiz-switch-success mb-0">
-                                <input  @if($transaction-> approved==0)onchange="update_approved(this)"  @else disabled  @endif   value="{{ $transaction->id }}" type="checkbox" <?php if($transaction->approved == 1) echo "checked";?> >
-                                <span class="slider round"></span>
-                            </label>
-                        </td>
+
 						<td class="text-right">
-                            @if($transaction->approved==0)
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  href="{{route('transactions.edit', ['id'=>$transaction->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-edit"></i>
                             </a>
-                            @endif
+
                             <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('transactions.user.board', ['user_id'=>$transaction->user_id] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-user"></i>
                             </a>
                                 <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('transactions.show',$transaction->id )}}" title="{{ translate('show') }}">
                                     <i class="las la-eye"></i>
                                 </a>
-                                @if($transaction->approved==0)
+
 
                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">
                                 <i class="las la-trash"></i>
                             </a>
-                                @endif
+
                         </td>
                     </tr>
                 @endforeach
