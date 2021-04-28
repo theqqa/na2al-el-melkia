@@ -76,7 +76,7 @@
    <i class="las la-edit"></i>
 </a>
                             @endif
-<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.edit',$catch_receipt->id )}}" title="{{ translate('Edit') }}">
+<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('catch_receipts.show',$catch_receipt->id )}}" title="{{ translate('show') }}">
    <i class="las la-eye"></i>
 </a>
 <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{ route('catch_receipt.download', $catch_receipt->id) }}" title="{{ translate('Download Catch Receipt') }}">

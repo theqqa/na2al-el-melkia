@@ -10,9 +10,9 @@
 		<div class="col-md-6 text-md-right">
             @if(Auth::user()->user_type != 'admin' )
 
-            <a href="{{ route('transaction.uploaded_file') }}" class="btn btn-circle btn-danger ">
-				<span>{{translate('Upload files for Transaction')}}</span>
-            </a>
+{{--            <a href="{{ route('transaction.uploaded_file') }}" class="btn btn-circle btn-danger ">--}}
+{{--				<span>{{translate('Upload files for Transaction')}}</span>--}}
+{{--            </a>--}}
                 <a href="{{ route('transactions.create') }}" class="btn btn-circle  btn-info">
                     <span>{{translate('Create New Transaction')}}</span>
                 </a>
@@ -98,6 +98,9 @@
                             <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('transactions.user.board', ['user_id'=>$transaction->user_id] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-user"></i>
                             </a>
+                                <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('transactions.show',$transaction->id )}}" title="{{ translate('show') }}">
+                                    <i class="las la-eye"></i>
+                                </a>
                                 @if($transaction->approved==0)
 
                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $transaction->id)}}" title="{{ translate('Delete') }}">
