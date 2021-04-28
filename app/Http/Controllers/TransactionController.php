@@ -69,7 +69,7 @@ class TransactionController extends Controller
                     $transaction = Transaction::where('id', $request->transaction_id)->first();
                     if (!empty($transaction)){
 
-                        $tran_files[] = $val->store($request->transaction_id);
+                        $tran_files[] = $val->store('uploads/transactions/'.$request->transaction_id);
 
 //                    else {
 //                        flash(translate('Something went wrong'))->error();
@@ -302,7 +302,7 @@ if ($transaction->save()) {
     {
         $files = Transaction::whereId($request->train_id)->first()->files;
         $files=explode(',',$files);
-        $zip_name = $request->train_id.".zip"; // Zip name
+        $zip_name ='uploads/zip/'.$request->train_id.".zip"; // Zip name
         $zip = new ZipArchive();
         $zip->open($zip_name, ZipArchive::CREATE);
         foreach ($files as $file) {
