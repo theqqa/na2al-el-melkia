@@ -92,7 +92,7 @@ class TransactionController extends Controller
                 flash(translate('Transaction Files has been inserted successfully'))->success();
 //                        return redirect()->route('transactions.index');
             }
-            return redirect()->route('transactions.file_index');
+            return redirect()->route('transaction.uploaded_file_index');
 
         }
 
@@ -257,7 +257,6 @@ if ($transaction->save()) {
             $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
         }
         $treasury_balance_history=   RepresentativeHistory::whereRepId($transaction->representative_id)->where('transaction_id',$transaction->id)->delete();
-        // $treasury_balance_history->delete();
 
         $representative_data->deserved_amount -=$total;
         $representative_data->save();
@@ -302,7 +301,7 @@ if ($transaction->save()) {
     {
         $files = Transaction::whereId($request->train_id)->first()->files;
         $files=explode(',',$files);
-        $zip_name = $request->train_id.".zip"; // Zip name
+        $zip_name ='uploads/zip/'.$request->train_id.".zip"; // Zip name
         $zip = new ZipArchive();
         $zip->open($zip_name, ZipArchive::CREATE);
         foreach ($files as $file) {
