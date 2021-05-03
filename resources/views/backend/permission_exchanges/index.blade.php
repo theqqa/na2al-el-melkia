@@ -74,7 +74,7 @@
                         <td>{{ $permission_exchange->expense->name }}</td>
 
 
-                        <td>{{ $permission_exchange->expense_by==1?translate('Cache'):translate('Bank transfer')}}</td>
+                        <td>{{ $permission_exchange->expense_by==1?translate('Cache'):$permission_exchange->expense_by==2?translate('Bank transfer'):''}}</td>
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input @if(auth()->user()->user_type == 'admin' && $permission_exchange->status == 0) onchange="update_approved(this)" @else disabled  @endif value="{{ $permission_exchange->id }}" type="checkbox" <?php if($permission_exchange->approved == 1) echo "checked";?> >

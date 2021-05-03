@@ -53,8 +53,8 @@ class ReportController extends Controller
 //        {
         $total_1[] = 0;
         $sum[] = 0;
-        $count_ownership_res[] = 0;
-        $count_renewal_res[] = 0;
+        $count_ownership_res[] = array();
+        $count_renewal_res[] = array();
         $count_owner = 0;
         $count_renewal = 0;
         $total_pre = 0;
@@ -76,14 +76,14 @@ class ReportController extends Controller
                 $count_owner += 1;
                 $total_1[$key] = $transaction->representative->transfer_price;
                 $total_all += $transaction->representative->transfer_price;
-                $count_ownership_res[$transaction->representative->name] = 0;
+                $count_ownership_res[$transaction->representative->name][$transaction->sub_representative]  = 0;
 
             } elseif ($transaction->type == 2) {
                 $count_renewal += 1;
 
                 $total_1[$key] = $transaction->representative->renewal_price;
                 $total_all += $transaction->representative->renewal_price;
-                $count_renewal_res[$transaction->representative->name] = 0;
+                $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  = 0;
 
 
             } elseif ($transaction->type == 3) {
@@ -92,8 +92,8 @@ class ReportController extends Controller
 
                 $total_1[$key] = $transaction->representative->renewal_price + $transaction->representative->transfer_price;
                 $total_all += $transaction->representative->renewal_price + $transaction->representative->transfer_price;
-                $count_ownership_res[$transaction->representative->name] = 0;
-                $count_renewal_res[$transaction->representative->name] = 0;
+                $count_ownership_res[$transaction->representative->name][$transaction->sub_representative] = 0;
+                $count_renewal_res[$transaction->representative->name] [$transaction->sub_representative] = 0;
 
 
             }
@@ -246,11 +246,21 @@ class ReportController extends Controller
         $treasury_balances = TreasuryBalanceHistory::orderBy('created_at', 'asc');
         $date_range = null;
         $changed_treasury = 0;
+        $expense_by=null;
+
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
             $treasury_balances = $treasury_balances->whereDate('created_at', '>=', $date_range1[0]);
             $treasury_balances = $treasury_balances->whereDate('created_at', '<=', $date_range1[1]);
+        }
+        if ($request->expense_by && $request->expense_by !="null" ) {
+            $expense_by = $request->expense_by;
+            $treasury_balances = $treasury_balances->whereHas('permissionExchange', function ($q) use ($expense_by) {
+                $q->where('permission_exchanges.expense_by', $expense_by);
+            })->orWhereHas('catchReceipt', function ($q) use ($expense_by) {
+                $q->where('catch_receipts.payment_by', $expense_by);
+            });
         }
         $treasury_balances_now = TreasuryBalanceHistory::all()->last();
         if (!empty($treasury_balances_now)) {
@@ -261,7 +271,7 @@ class ReportController extends Controller
         }
         $treasury_balances = $treasury_balances->get();
 
-        return view('backend.reports.treasury_balance_report', compact('changed_treasury', 'business_settings_initial', 'treasury_balances', 'date_range', 'business_settings'));
+        return view('backend.reports.treasury_balance_report', compact('expense_by','changed_treasury', 'business_settings_initial', 'treasury_balances', 'date_range', 'business_settings'));
     }
 
     public function users_taam_report(Request $request)
