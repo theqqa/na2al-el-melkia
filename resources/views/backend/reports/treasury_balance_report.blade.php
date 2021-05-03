@@ -19,6 +19,13 @@
                                 <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
                             </div>
                         </div>
+                        <div class="col-md-3 ml-auto">
+                            <select class="from-control aiz-selectpicker" name="expense_by" data-live-search="true"  required >
+                                <option value="null" @if(empty( $expense_by) )selected @endif>{{ translate('Expense By') }}</option>
+                                <option value="1" @if(!empty( $expense_by) && $expense_by==1 )selected @endif>{{ translate('cache')}}</option>
+                                <option value="2" @if(!empty( $expense_by) && $expense_by==2 )selected @endif>{{ translate('Bank transfer')}}</option>
+                            </select>
+                        </div>
                         <div class="col-md-2">
                             <button class="btn btn-md btn-primary" type="submit">
                                 {{ translate('Filter') }}
@@ -43,12 +50,17 @@
         <th>{{translate('Date')}}</th>
         <th data-breakpoints="lg">{{ translate('Service') }}</th>
         <th data-breakpoints="lg">{{ translate('Statement') }}</th>
-        <th data-breakpoints="lg">{{ translate('Price') }}</th>
+        <th data-breakpoints="lg">{{ translate('Debtor') }}</th>
+        <th data-breakpoints="lg">{{ translate('The creditor') }}</th>
         <th data-breakpoints="lg">{{ translate('Balance') }}</th>
 
     </tr>
     </thead>
     <tbody>
+    <?php
+    $total_catach =0;
+    $total_permission=0;
+    ?>
     @foreach($treasury_balances as $key => $treasury_balance)
         <tr>
             <td>{{ $key+1 }}</td>
@@ -60,19 +72,32 @@
                 <td><a href="{{route('permission_exchanges.show',$treasury_balance->permission_exchange_id)}}">{{translate('Permission Exchanges')}}</a></td>
             @endif
             @if(!empty($treasury_balance->catch_receipt_id))
+                <?php
+                $total_catach +=$treasury_balance->balance_request;
+                ?>
                 <td><a href="{{route('representatives.show', encrypt( $treasury_balance->catchReceipt->representative->id))}}">{{ $treasury_balance->catchReceipt->representative->name}}</a></td>
-
                 <td>{{ $treasury_balance->balance_request }}</td>
+                <td>--</td>
             @elseif(!empty($treasury_balance->permission_exchange_id))
+                <?php
+                $total_permission+=$treasury_balance->balance_request;
+                ?>
                 <td>{{ $treasury_balance->permissionExchange->expense->name}}</td>
-
+                <td>--</td>
                 <td style="color: red">{{- $treasury_balance->balance_request }}</td>
-
             @endif
             <td>{{ $treasury_balance->balance_after + $changed_treasury}}</td>
 
 
         </tr>
+        @if($loop->last)
+            <tr style="font-weight: bold">
+                <td colspan="4">{{translate('Total2')}}</td>
+                <td colspan="1" class="btn-soft-success aiz-side-nav-text"> <span class="small">ريال {{$total_catach}}</span> </td>
+                <td colspan="1" class="btn-soft-danger aiz-side-nav-text"> <span class="small">ريال {{$total_permission}}</span> </td>
+
+            </tr>
+        @endif
     @endforeach
     </tbody>
 </table>

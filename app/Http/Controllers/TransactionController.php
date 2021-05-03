@@ -134,6 +134,7 @@ if ($transaction->save()) {
         elseif($request->type==3){
             $total  +=  $representative_data->renewal_price+$representative_data->transfer_price;
         }
+        dd($representative_data);
         $treasury_balance_history= new  RepresentativeHistory();
         $treasury_balance_history->rep_id= $transaction->representative_id;
         $treasury_balance_history->transaction_id= $transaction->id;

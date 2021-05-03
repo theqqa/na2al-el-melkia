@@ -79,7 +79,7 @@
 
                                     @if ($transaction->type==1)
                                         @php
-                                            $count_ownership_res[$transaction->representative->name] +=1;
+                                            $count_ownership_res[$transaction->representative->name][$transaction->sub_representative] +=1;
                                         @endphp
                                     <td>
                                         {{translate("Ownership")}}
@@ -89,7 +89,7 @@
                                         </td>
                                     @elseif($transaction->type==2)
                                         @php
-                                            $count_renewal_res[$transaction->representative->name] +=1;
+                                            $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
                                         @endphp
                                      <td>
                                             {{translate("Renewal")}}
@@ -99,8 +99,8 @@
                                         </td>
                                     @elseif($transaction->type==3)
                                         @php
-                                            $count_ownership_res[$transaction->representative->name] +=1;
-                                            $count_renewal_res[$transaction->representative->name] +=1;
+                                            $count_ownership_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
+                                            $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
                                         @endphp
                                         <td>
                                             {{translate("Both")}}
@@ -142,12 +142,19 @@
                     <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn   btn-soft-danger"> {{$count_renewal}}</span></h6>
 <h5>{{translate('User Transaction')}}</h5>
                     @foreach($newtotal as $newkey=>$newvalue)
-                        @if(!is_array($newvalue))
+                        <h6 >{{$newkey }}</h6>
+                    <ul>
+                        @foreach($newvalue as $newkey_1=>$newvalue_1)
 
-                            <h6 ><span style="font-weight: bold;color: #0abb75">{{$newkey .'  '}}</span>{{array_key_exists($newkey,$count_ownership_res)?translate("Ownership"):translate("Renewal")}}:<span style="color: red"> {{$newvalue}}</span></h6>
+                        @if(!is_array($newvalue_1))
+
+                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{array_key_exists($newkey_1,$count_ownership_res[$newkey])?translate("Ownership"):translate("Renewal")}}:<span style="color: red"> {{$newvalue_1}}</span></li>
                         @else
-                            <h6 ><span style="font-weight: bold;color: #0abb75">{{$newkey .'  '}}</span>{{translate("Ownership")}}:<span style="color: red"> {{$newvalue[0]}}  </span>      {{translate("Renewal")}} :<span style="color: red"> {{$newvalue[1]}}</span></h6>
+                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{translate("Ownership")}}:<span style="color: red"> {{$newvalue_1[0]}}  </span>      {{translate("Renewal")}} :<span style="color: red"> {{$newvalue_1[1]}}</span></li>
                         @endif
+                        @endforeach
+                    </ul>
+
                     @endforeach
                 </div>
                 </div>
