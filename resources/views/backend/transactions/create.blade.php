@@ -46,7 +46,11 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-from-label" for="email">{{translate('Sub Representative')}}</label>
                         <div class="col-lg-9">
-                            <input type="text" placeholder="{{translate('Sub Representative')}}" id="sub_representative" name="sub_representative" class="form-control" required>
+                            <select class="form-control aiz-selectpicker" name="sub_representative" id="sub_representative" data-live-search="true" required>
+                                @foreach ($sub_representatives as $val)
+                                    <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

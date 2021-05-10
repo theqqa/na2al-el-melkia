@@ -212,6 +212,12 @@
                                     <span class="aiz-side-nav-text">{{ translate('Representative list') }}</span>
                                 </a>
                             </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('sub_representatives.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['sub_representatives.index', 'sub_representatives.create', 'sub_representatives.edit'])}}">
+
+                                    <span class="aiz-side-nav-text">{{ translate('SubRepresentative list') }}</span>
+                                </a>
+                            </li>
 {{--                            @if(\App\BusinessSetting::where('type', 'classified_product')->first()->value == 1)--}}
 {{--                            <li class="aiz-side-nav-item">--}}
 {{--                                <a href="{{route('classified_products')}}" class="aiz-side-nav-link">--}}
@@ -356,6 +362,63 @@
 {{--                        </ul>--}}
 {{--                    </li>--}}
 {{--                @endif--}}
+                <!-- Reports -->
+                    @if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
+                        <li class="aiz-side-nav-item">
+                            <a href="#" class="aiz-side-nav-link">
+                                <i class="las la-file-alt aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{ translate('Reports') }}</span>
+                                <span class="aiz-side-nav-arrow"></span>
+                            </a>
+                            <ul class="aiz-side-nav-list level-2">
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('users_transactions_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_transactions_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('User Transaction') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('users_representative_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_representative_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Representative') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('catch_receipts_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['catch_receipts_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Catch Receipts') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('permission_exchanges_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['permission_exchanges_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Permission Exchanges') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('treasury_balance_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['treasury_balance_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Treasury Balance Report') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('treasury_balance_cache_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['treasury_balance_cache_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Treasury Balance Cache Report') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('users_taam_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_taam_report.index'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('User Taam Transaction') }}</span>
+                                    </a>
+                                </li>
+                                {{--                            <li class="aiz-side-nav-item">--}}
+                                {{--                                <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">--}}
+                                {{--                                    <span class="aiz-side-nav-text">{{ translate('User Searches') }}</span>--}}
+                                {{--                                </a>--}}
+                                {{--                            </li>--}}
+                                {{--                            <li class="aiz-side-nav-item">--}}
+                                {{--                                <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">--}}
+                                {{--                                    <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>--}}
+                                {{--                                </a>--}}
+                                {{--                            </li>--}}
+                            </ul>
+                        </li>
+                    @endif
 @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))
 
 <li class="aiz-side-nav-item">
@@ -365,58 +428,7 @@
 </a>
 </li>
 @endif
-<!-- Reports -->
-@if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
-<li class="aiz-side-nav-item">
-<a href="#" class="aiz-side-nav-link">
-<i class="las la-file-alt aiz-side-nav-icon"></i>
-<span class="aiz-side-nav-text">{{ translate('Reports') }}</span>
-<span class="aiz-side-nav-arrow"></span>
-</a>
-<ul class="aiz-side-nav-list level-2">
-<li class="aiz-side-nav-item">
-  <a href="{{ route('users_transactions_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_transactions_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('User Transaction') }}</span>
-  </a>
-</li>
-<li class="aiz-side-nav-item">
-  <a href="{{ route('users_representative_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_representative_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('Representative') }}</span>
-  </a>
-</li>
-<li class="aiz-side-nav-item">
-  <a href="{{ route('catch_receipts_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['catch_receipts_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('Catch Receipts') }}</span>
-  </a>
-</li>
-<li class="aiz-side-nav-item">
-  <a href="{{ route('permission_exchanges_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['permission_exchanges_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('Permission Exchanges') }}</span>
-  </a>
-</li>
-<li class="aiz-side-nav-item">
-  <a href="{{ route('treasury_balance_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['treasury_balance_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('Treasury Balance Report') }}</span>
-  </a>
-</li>
-<li class="aiz-side-nav-item">
-  <a href="{{ route('users_taam_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['users_taam_report.index'])}}">
-      <span class="aiz-side-nav-text">{{ translate('User Taam Transaction') }}</span>
-  </a>
-</li>
-{{--                            <li class="aiz-side-nav-item">--}}
-{{--                                <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">--}}
-{{--                                    <span class="aiz-side-nav-text">{{ translate('User Searches') }}</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                            <li class="aiz-side-nav-item">--}}
-{{--                                <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">--}}
-{{--                                    <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-</ul>
-</li>
-@endif
+
 
 <!--Blog System-->
 {{--                <li class="aiz-side-nav-item">--}}

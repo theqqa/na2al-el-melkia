@@ -142,19 +142,71 @@
                     <h6 class="mb-md-0 h6">{{translate("Renewal Count")}}:<span class="btn   btn-soft-danger"> {{$count_renewal}}</span></h6>
 <h5>{{translate('User Transaction')}}</h5>
                     @foreach($newtotal as $newkey=>$newvalue)
-                        <h6 >{{$newkey }}</h6>
-                    <ul>
-                        @foreach($newvalue as $newkey_1=>$newvalue_1)
-
+                        <?php
+                        $total_count_owner=0;
+                        $total_count_renewal=0;
+                        ?>
+                        <h6 style="font-weight: bold;color: #0abb75">{{$newkey }}</h6>
+                    <table class="table table-bordered  mb-0">
+                        <thead>
+                        <tr>
+                            <th data-breakpoints="lg">{{ translate('Sub Representative') }}</th>
+                            <th>{{ translate('Ownership') }}</th>
+                            <th data-breakpoints="lg">{{ translate('Renewal') }}</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                    @foreach($newvalue as $newkey_1=>$newvalue_1)
                         @if(!is_array($newvalue_1))
 
-                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{array_key_exists($newkey_1,$count_ownership_res[$newkey])?translate("Ownership"):translate("Renewal")}}:<span style="color: red"> {{$newvalue_1}}</span></li>
+                        <tr>
+                            <td>{{$newkey_1}}</td>
+                            @if(  array_key_exists($newkey_1,$count_ownership_res[$newkey]))
+                                <?php
+                                $total_count_owner +=$newvalue_1;
+                                ?>
+                            <td>{{$newvalue_1}}</td>
+                                <td>--</td>
+                                @else
+                                <?php
+                                $total_count_renewal +=$newvalue_1;
+                                ?>
+                                <td>--</td>
+                                <td>{{$newvalue_1}}</td>
+                             @endif
+                        </tr>
                         @else
-                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{translate("Ownership")}}:<span style="color: red"> {{$newvalue_1[0]}}  </span>      {{translate("Renewal")}} :<span style="color: red"> {{$newvalue_1[1]}}</span></li>
+                            <tr>
+                                <?php
+                                $total_count_owner +=$newvalue_1[0];
+                                $total_count_renewal +=$newvalue_1[1];
+                                ?>
+                                <td>{{$newkey_1}}</td>
+                                <td>{{$newvalue_1[0]}} </td>
+                                <td>{{$newvalue_1[1]}}</td>
+                            </tr>
                         @endif
-                        @endforeach
-                    </ul>
+                        @if($loop->last)
+                            <td style="font-weight: bold;color: red">{{translate('Total2')}}</td>
+                            <td>{{$total_count_owner}} </td>
+                            <td>{{$total_count_renewal}}</td>
+                        @endif
+                    @endforeach
 
+                    </tbody>
+                    </table>
+{{--                    <ul>--}}
+{{--                        @foreach($newvalue as $newkey_1=>$newvalue_1)--}}
+
+{{--                        @if(!is_array($newvalue_1))--}}
+
+{{--                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{array_key_exists($newkey_1,$count_ownership_res[$newkey])?translate("Ownership"):translate("Renewal")}}:<span style="color: red"> {{$newvalue_1}}</span></li>--}}
+{{--                        @else--}}
+{{--                            <li ><span style="font-weight: bold;color: #0abb75">{{$newkey_1 .'  '}}</span>{{translate("Ownership")}}:<span style="color: red"> {{$newvalue_1[0]}}  </span>      {{translate("Renewal")}} :<span style="color: red"> {{$newvalue_1[1]}}</span></li>--}}
+{{--                        @endif--}}
+{{--                        @endforeach--}}
+{{--                    </ul>--}}
+<br>
                     @endforeach
                 </div>
                 </div>

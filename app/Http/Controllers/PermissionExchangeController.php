@@ -173,7 +173,13 @@ class PermissionExchangeController extends Controller
     public function confirm_exchanges(Request $request)
     {
         $permission_exchange = PermissionExchange::findOrFail($request->id);
-        $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+        if($request->expense_by == "2") {
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+
+        }else{
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+
+        }
         $treasury_balance_history= new  TreasuryBalanceHistory();
         $treasury_balance_history->permission_exchange_id=$permission_exchange->id;
         $treasury_balance_history->balance_before= $treasury_balance->value;

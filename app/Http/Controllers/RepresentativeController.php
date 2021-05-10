@@ -126,13 +126,7 @@ class RepresentativeController extends Controller
                 'name' => 'required|unique:representatives,name,'.$id,
             ])->validate();
         $user = Representative::findOrFail($id);
-        $rep_trans=Transaction::whereRepresentativeId($id)->count();
-        $rep_catch=CatchReceipt::whereRepresentativeId($id)->count();
-        if($rep_trans>0 or $rep_catch >0)
-        {
-            flash(translate('This representative have Related transactions or Catch Receipts . Can\'t deleted'))->error();
-            return redirect()->route('representatives.index');
-        }
+
             $user->name = $request->name;
             $user->transfer_price = $request->transfer_price;
             $user->renewal_price = $request->renewal_price;

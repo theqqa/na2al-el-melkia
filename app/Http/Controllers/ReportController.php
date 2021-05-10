@@ -251,14 +251,14 @@ class ReportController extends Controller
             $treasury_balances = $treasury_balances->whereDate('created_at', '>=', $date_range1[0]);
             $treasury_balances = $treasury_balances->whereDate('created_at', '<=', $date_range1[1]);
         }
-        if ($request->expense_by && $request->expense_by !="null" ) {
-            $expense_by = $request->expense_by;
+//        if ($request->expense_by && $request->expense_by !="null" ) {
+//            $expense_by = $request->expense_by;
             $treasury_balances = $treasury_balances->whereHas('permissionExchange', function ($q) use ($expense_by) {
-                $q->where('permission_exchanges.expense_by', $expense_by);
+                $q->where('permission_exchanges.expense_by', 2);
             })->orWhereHas('catchReceipt', function ($q) use ($expense_by) {
-                $q->where('catch_receipts.payment_by', $expense_by);
+                $q->where('catch_receipts.payment_by', 2);
             });
-        }
+//        }
         $treasury_balances_now = TreasuryBalanceHistory::all()->last();
         if (!empty($treasury_balances_now)) {
 //     dd($treasury_balances_now->balance_after,$business_settings->value);
@@ -269,6 +269,41 @@ class ReportController extends Controller
         $treasury_balances = $treasury_balances->get();
 
         return view('backend.reports.treasury_balance_report', compact('expense_by','changed_treasury', 'business_settings_initial', 'treasury_balances', 'date_range', 'business_settings'));
+    }
+    public function treasury_balance_cache_report(Request $request)
+    {
+        $business_settings = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+        $business_settings_initial = BusinessSetting::where('type', 'initial_treasury_balance_cache')->first();
+
+        $treasury_balances = TreasuryBalanceHistory::orderBy('created_at', 'asc');
+        $date_range = null;
+        $changed_treasury = 0;
+        $expense_by=null;
+
+        if ($request->date_range) {
+            $date_range = $request->date_range;
+            $date_range1 = explode(" / ", $request->date_range);
+            $treasury_balances = $treasury_balances->whereDate('created_at', '>=', $date_range1[0]);
+            $treasury_balances = $treasury_balances->whereDate('created_at', '<=', $date_range1[1]);
+        }
+//        if ($request->expense_by && $request->expense_by !="null" ) {
+//            $expense_by = $request->expense_by;
+            $treasury_balances = $treasury_balances->whereHas('permissionExchange', function ($q) use ($expense_by) {
+                $q->where('permission_exchanges.expense_by',1);
+            })->orWhereHas('catchReceipt', function ($q) use ($expense_by) {
+                $q->where('catch_receipts.payment_by',1);
+            });
+//        }
+        $treasury_balances_now = TreasuryBalanceHistory::all()->last();
+        if (!empty($treasury_balances_now)) {
+//     dd($treasury_balances_now->balance_after,$business_settings->value);
+            if ($treasury_balances_now->balance_after < $business_settings->value) {
+                $changed_treasury = $business_settings->value - $treasury_balances_now->balance_after;
+            }
+        }
+        $treasury_balances = $treasury_balances->get();
+
+        return view('backend.reports.treasury_cache_balance_report', compact('expense_by','changed_treasury', 'business_settings_initial', 'treasury_balances', 'date_range', 'business_settings'));
     }
 
     public function users_taam_report(Request $request)

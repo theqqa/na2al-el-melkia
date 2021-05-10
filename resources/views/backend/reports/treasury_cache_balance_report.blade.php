@@ -14,7 +14,7 @@
                 <form action="{{ route('treasury_balance_report.index') }}" method="GET">
 
                     <div class="card-header row gutters-5">
-                        <div class="col-md-3">
+                        <div class="col-md-">
                             <div class="form-group mb-0">
                                 <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
                             </div>
@@ -89,7 +89,7 @@
                 <td>{{ $treasury_balance->permissionExchange->expense->name}}</td>
                 <td>--</td>
                 <td style="color: red">{{- $treasury_balance->balance_request }}</td>
-                <td>{{ $total_balance -=$treasury_balance->balance_request }}</td>
+                 <td>{{ $total_balance -=$treasury_balance->balance_request }}</td>
 
             @endif
 

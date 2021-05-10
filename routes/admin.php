@@ -53,6 +53,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::post('/representatives/active', 'RepresentativeController@updateActive')->name('representatives.active');
     Route::get('/representatives/destroy/{id}', 'RepresentativeController@destroy')->name('representatives.destroy');
 
+
+    Route::resource('sub_representatives', 'SubRepresentativeController');
+    Route::get('/sub_representatives/destroy/{id}', 'SubRepresentativeController@destroy')->name('sub_representatives.destroy');
+
+
     Route::resource('expenses', 'ExpenseController');
     Route::get('/expenses/destroy/{id}', 'ExpenseController@destroy')->name('expenses.destroy');
 
@@ -94,6 +99,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/catch_receipts_report', 'ReportController@catch_receipts_report')->name('catch_receipts_report.index');
     Route::get('/permission_exchanges_report', 'ReportController@permission_exchanges_report')->name('permission_exchanges_report.index');
     Route::get('/treasury_balance_report', 'ReportController@treasury_balance_report')->name('treasury_balance_report.index');
+    Route::get('/treasury_balance_cache_report', 'ReportController@treasury_balance_cache_report')->name('treasury_balance_cache_report.index');
+
     Route::get('/users_taam_report', 'ReportController@users_taam_report')->name('users_taam_report.index');
 
     Route::post('/send_mail', 'ReportController@send_mail_representative')->name('send_mail_representative');

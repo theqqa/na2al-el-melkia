@@ -94,11 +94,15 @@ class BusinessSettingsController extends Controller
     public function treasury_balance(Request $request)
     {
         $business_settings = BusinessSetting::where('type', 'initial_treasury_balance')->first();
-        return view('backend.treasury_balance.index', compact('business_settings'));
+        $business_settings_cache = BusinessSetting::where('type', 'initial_treasury_balance_cache')->first();
+
+        return view('backend.treasury_balance.index', compact('business_settings','business_settings_cache'));
     }
 
     public function treasury_balance_update(Request $request){
         $business_settings = BusinessSetting::where('type', $request->type)->first();
+        $business_settings_cache = BusinessSetting::where('type', $request->type_cache)->first();
+        $business_settings_cache_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
 
         $business_settings_balance = BusinessSetting::where('type', 'treasury_balance')->first();
         if($business_settings_balance->value ==0){
@@ -121,6 +125,26 @@ class BusinessSettingsController extends Controller
         $business_settings->value = $request->value;
         $business_settings->save();
 
+
+        if($business_settings_cache_balance->value ==0){
+            $business_settings_cache_balance->value = $request->value_cache;
+            $business_settings_cache_balance->save();
+        }else{
+
+            if($business_settings_cache->value < $request->value_cache){
+
+                $sub=$request->value_cache-$business_settings_cache->value ;
+                $business_settings_cache_balance->value +=$sub;
+            }elseif ($business_settings_cache->value > $request->value_cache){
+                $sub=$business_settings_cache->value - $request->value_cache ;
+                $business_settings_cache_balance->value -=$sub;
+
+            }
+            $business_settings_cache_balance->save();
+        }
+        $business_settings_cache->type = $request->type_cache;
+        $business_settings_cache->value = $request->value_cache;
+        $business_settings_cache->save();
         flash(translate('Treasury Balance updated successfully'))->success();
         return back();
     }

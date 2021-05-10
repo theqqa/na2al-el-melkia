@@ -9,6 +9,7 @@ use App\Models\RepresentativeHistory;
 use App\Models\Transaction;
 use App\Models\TreasuryBalanceHistory;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\FlashDeal;
 use App\FlashDealTranslation;
@@ -79,23 +80,28 @@ class CatchReceiptController extends Controller
 if ($catch_receipt->save()) {
     $catch_receipt->code = 'Cr-'.$catch_receipt->id;
     $catch_receipt->save();
-    $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
-    $treasury_balance_history= new  TreasuryBalanceHistory();
-    $treasury_balance_history->catch_receipt_id=$catch_receipt->id;
-    $treasury_balance_history->balance_before= $treasury_balance->value;
-    $treasury_balance_history->balance_request=$catch_receipt->price;
-    $treasury_balance_history->balance_after=$treasury_balance->value + $catch_receipt->price ;
+    if($catch_receipt->payment_by == "2") {
+        $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+    }
+    else{
+        $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+    }
+    $treasury_balance_history = new  TreasuryBalanceHistory();
+    $treasury_balance_history->catch_receipt_id = $catch_receipt->id;
+    $treasury_balance_history->balance_before = $treasury_balance->value;
+    $treasury_balance_history->balance_request = $catch_receipt->price;
+    $treasury_balance_history->balance_after = $treasury_balance->value + $catch_receipt->price;
     $treasury_balance_history->save();
-    $treasury_balance->value= $treasury_balance->value + $catch_receipt->price ;
+    $treasury_balance->value = $treasury_balance->value + $catch_receipt->price;
     $treasury_balance->save();
-    $treasury_balance_history= new  RepresentativeHistory();
-    $treasury_balance_history->rep_id= $catch_receipt->representative->id;
-    $treasury_balance_history->catch_receipt_id= $catch_receipt->id;
-    $treasury_balance_history->deserved_amount_before= $catch_receipt->representative->deserved_amount;
-    $treasury_balance_history->deserved_amount_after=$catch_receipt->representative->deserved_amount - $catch_receipt->price ;
-    $treasury_balance_history->deserved_amount_request=$catch_receipt->price;
+    $treasury_balance_history = new  RepresentativeHistory();
+    $treasury_balance_history->rep_id = $catch_receipt->representative->id;
+    $treasury_balance_history->catch_receipt_id = $catch_receipt->id;
+    $treasury_balance_history->deserved_amount_before = $catch_receipt->representative->deserved_amount;
+    $treasury_balance_history->deserved_amount_after = $catch_receipt->representative->deserved_amount - $catch_receipt->price;
+    $treasury_balance_history->deserved_amount_request = $catch_receipt->price;
     $treasury_balance_history->save();
-    $catch_receipt->representative->deserved_amount=  $catch_receipt->representative->deserved_amount - $catch_receipt->price ;
+    $catch_receipt->representative->deserved_amount = $catch_receipt->representative->deserved_amount - $catch_receipt->price;
     $catch_receipt->representative->save();
             flash(translate('Catch Receipt has been inserted successfully'))->success();
             return redirect()->route('catch_receipts.index');
@@ -145,31 +151,33 @@ if ($catch_receipt->save()) {
     {
         $catch_receipt_old = CatchReceipt::findOrFail($id);
 
+        if($request->payment_by == "2") {
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+        }else{
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
 
-        $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
-        $treasury_balance->value= $treasury_balance->value-$catch_receipt_old->price ;
+        }
+        $treasury_balance->value = $treasury_balance->value - $catch_receipt_old->price;
         $treasury_balance->save();
-        $treasury_balance_history_old= TreasuryBalanceHistory::where('catch_receipt_id',$catch_receipt_old->id)->first();
+        $treasury_balance_history_old = TreasuryBalanceHistory::where('catch_receipt_id', $catch_receipt_old->id)->first();
 
-        $treasury_balance_history_old->balance_before= $treasury_balance->value;
-        $treasury_balance_history_old->balance_request=$request->price;
-        $treasury_balance_history_old->balance_after=$treasury_balance->value + $request->price ;
+        $treasury_balance_history_old->balance_before = $treasury_balance->value;
+        $treasury_balance_history_old->balance_request = $request->price;
+        $treasury_balance_history_old->balance_after = $treasury_balance->value + $request->price;
         $treasury_balance_history_old->save();
 
-        $treasury_balance->value= $treasury_balance->value + $request->price ;
+        $treasury_balance->value = $treasury_balance->value + $request->price;
         $treasury_balance->save();
-        $treasury_balance_history_old= RepresentativeHistory::whereRepId($catch_receipt_old->representative->id)->where('catch_receipt_id',$catch_receipt_old->id)->first();
-        $catch_receipt_old->representative->deserved_amount=  $catch_receipt_old->representative->deserved_amount + $catch_receipt_old->price ;
+        $treasury_balance_history_old = RepresentativeHistory::whereRepId($catch_receipt_old->representative->id)->where('catch_receipt_id', $catch_receipt_old->id)->first();
+        $catch_receipt_old->representative->deserved_amount = $catch_receipt_old->representative->deserved_amount + $catch_receipt_old->price;
         $catch_receipt_old->representative->save();
 
-        $treasury_balance_history_old->deserved_amount_before= $catch_receipt_old->representative->deserved_amount;
-        $treasury_balance_history_old->deserved_amount_after=$catch_receipt_old->representative->deserved_amount - $request->price ;
-        $treasury_balance_history_old->deserved_amount_request=$request->price;
+        $treasury_balance_history_old->deserved_amount_before = $catch_receipt_old->representative->deserved_amount;
+        $treasury_balance_history_old->deserved_amount_after = $catch_receipt_old->representative->deserved_amount - $request->price;
+        $treasury_balance_history_old->deserved_amount_request = $request->price;
         $treasury_balance_history_old->save();
-        $catch_receipt_old->representative->deserved_amount=  $catch_receipt_old->representative->deserved_amount - $request->price ;
+        $catch_receipt_old->representative->deserved_amount = $catch_receipt_old->representative->deserved_amount - $request->price;
         $catch_receipt_old->representative->save();
-
-
 
         $catch_receipt_old->date = $request->date;
         $catch_receipt_old->price =$request-> price;
