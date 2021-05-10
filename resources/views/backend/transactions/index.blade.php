@@ -57,7 +57,7 @@
                         <td>{{ ($key+1) + ($transactions->currentPage() - 1)*$transactions->perPage() }}</td>
                         <td>{{ $transaction->transaction_id}}</td>
                         <td>{{\App\Models\Representative::find($transaction->representative_id)->name}}</td>
-                        <td>{{ $transaction->subRepresentative->sub_representative}}</td>
+                        <td>{{ $transaction->subRepresentative->name}}</td>
 
                         <td>
                             @if ($transaction->type==1)
