@@ -76,14 +76,14 @@ class ReportController extends Controller
                 $count_owner += 1;
                 $total_1[$key] = $transaction->representative->transfer_price;
                 $total_all += $transaction->representative->transfer_price;
-                $count_ownership_res[$transaction->representative->name][$transaction->sub_representative]  = 0;
+                $count_ownership_res[$transaction->representative->name][$transaction->subRepresentative->name]  = 0;
 
             } elseif ($transaction->type == 2) {
                 $count_renewal += 1;
 
                 $total_1[$key] = $transaction->representative->renewal_price;
                 $total_all += $transaction->representative->renewal_price;
-                $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  = 0;
+                $count_renewal_res[$transaction->representative->name][$transaction->subRepresentative->name]  = 0;
 
 
             } elseif ($transaction->type == 3) {
@@ -92,8 +92,8 @@ class ReportController extends Controller
 
                 $total_1[$key] = $transaction->representative->renewal_price + $transaction->representative->transfer_price;
                 $total_all += $transaction->representative->renewal_price + $transaction->representative->transfer_price;
-                $count_ownership_res[$transaction->representative->name][$transaction->sub_representative] = 0;
-                $count_renewal_res[$transaction->representative->name] [$transaction->sub_representative] = 0;
+                $count_ownership_res[$transaction->representative->name][$transaction->subRepresentative->name] = 0;
+                $count_renewal_res[$transaction->representative->name] [$transaction->subRepresentative->name] = 0;
 
 
             }

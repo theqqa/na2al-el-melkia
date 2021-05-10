@@ -36,6 +36,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+    public function subRepresentative()
+    {
+        return $this->belongsTo(SubRepresentative::class,'sub_representative');
+    }
     public function representative() {
         return $this->belongsTo(Representative::class);
     }

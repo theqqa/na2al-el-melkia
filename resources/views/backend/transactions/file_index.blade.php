@@ -84,7 +84,7 @@
 
                         <td>{{\App\Models\Representative::find($transaction->representative_id)->name}}</td>
 
-                        <td>{{ $transaction->sub_representative}}</td>
+                        <td>{{ $transaction->subRepresentative->sub_representative}}</td>
 
                         <td>
                             @if ($transaction->type==1)

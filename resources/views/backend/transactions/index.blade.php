@@ -43,8 +43,6 @@
                     <th>{{translate('Transactions Id')}}</th>
                     <th data-breakpoints="lg">{{ translate('Representative Name') }}</th>
                     <th data-breakpoints="lg">{{ translate('Sub Representative') }}</th>
-
-
                     <th data-breakpoints="lg">{{ translate('Type') }}</th>
                     <th data-breakpoints="lg">{{ translate('Time Date') }}</th>
                     <th data-breakpoints="lg">{{ translate('Status') }}</th>
@@ -59,7 +57,7 @@
                         <td>{{ ($key+1) + ($transactions->currentPage() - 1)*$transactions->perPage() }}</td>
                         <td>{{ $transaction->transaction_id}}</td>
                         <td>{{\App\Models\Representative::find($transaction->representative_id)->name}}</td>
-                        <td>{{ $transaction->sub_representative}}</td>
+                        <td>{{ $transaction->subRepresentative->sub_representative}}</td>
 
                         <td>
                             @if ($transaction->type==1)

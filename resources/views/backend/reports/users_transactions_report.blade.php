@@ -73,13 +73,13 @@
 
                                     <td >{{ $transaction->user->name }}</td>
                                     <td >{{$transaction->representative->name}}</td>
-                                    <td >{{ $transaction->sub_representative }}</td>
+                                    <td >{{ $transaction->subRepresentative->name }}</td>
 
                                     <td>{{ $transaction->transaction_id}}</td>
 
                                     @if ($transaction->type==1)
                                         @php
-                                            $count_ownership_res[$transaction->representative->name][$transaction->sub_representative] +=1;
+                                            $count_ownership_res[$transaction->representative->name][$transaction->subRepresentative->name] +=1;
                                         @endphp
                                     <td>
                                         {{translate("Ownership")}}
@@ -89,7 +89,7 @@
                                         </td>
                                     @elseif($transaction->type==2)
                                         @php
-                                            $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
+                                            $count_renewal_res[$transaction->representative->name][$transaction->subRepresentative->name]  +=1;
                                         @endphp
                                      <td>
                                             {{translate("Renewal")}}
@@ -99,8 +99,8 @@
                                         </td>
                                     @elseif($transaction->type==3)
                                         @php
-                                            $count_ownership_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
-                                            $count_renewal_res[$transaction->representative->name][$transaction->sub_representative]  +=1;
+                                            $count_ownership_res[$transaction->representative->name][$transaction->subRepresentative->name]  +=1;
+                                            $count_renewal_res[$transaction->representative->name][$transaction->subRepresentative->name]  +=1;
                                         @endphp
                                         <td>
                                             {{translate("Both")}}
