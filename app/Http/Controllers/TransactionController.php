@@ -167,9 +167,10 @@ class TransactionController extends Controller
     public function show($id)
     {
         $rep_lists=Representative::whereActive('1')->get();
+        $sub_representatives=SubRepresentative::get();
 
         $transaction = Transaction::findOrFail($id);
-        return view('backend.transactions.show', compact('transaction','rep_lists'));
+        return view('backend.transactions.show', compact('transaction','rep_lists','sub_representatives'));
     }
 
     /**
