@@ -144,8 +144,11 @@ class TransactionController extends Controller
         $treasury_balance_history->deserved_amount_before= $representative_data->deserved_amount;
         $treasury_balance_history->deserved_amount_after=$representative_data->deserved_amount + $total ;
         $treasury_balance_history->deserved_amount_request=$total;
+            $treasury_balance_history->timestamps = false;
+
             $treasury_balance_history->created_at=$request->register_at;
-        $treasury_balance_history->save();
+
+            $treasury_balance_history->save();
 
         $representative_data->deserved_amount +=$total;
         $representative_data->save();
@@ -232,10 +235,11 @@ class TransactionController extends Controller
               $treasury_balance_history->deserved_amount_before = $representative_data->deserved_amount;
               $treasury_balance_history->deserved_amount_after = $representative_data->deserved_amount + $total;
               $treasury_balance_history->deserved_amount_request = $total;
+              $treasury_balance_history->timestamps = false;
+
               $treasury_balance_history->created_at=$request->register_at;
 
-              $treasury_balance_history->save();
-          }
+              $treasury_balance_history->save();          }
 //          }else{
 //
 //            $treasury_balance_history= new  RepresentativeHistory();

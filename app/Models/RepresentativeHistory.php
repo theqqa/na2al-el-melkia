@@ -31,6 +31,7 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class RepresentativeHistory extends Model
 {
+
     protected static function boot()
     {
         parent::boot();
