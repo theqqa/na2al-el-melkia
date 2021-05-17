@@ -122,11 +122,32 @@ class PermissionExchangeController extends Controller
     public function update(Request $request, $id)
     {
         $permission_exchanges = PermissionExchange::findOrFail($id);
+        if($permission_exchanges->status == 1 ){
+            if($request->expense_by == "2") {
+                $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+
+            }else{
+                $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+
+            }
+            $treasury_balance->value= $treasury_balance->value + $permission_exchanges->price ;
+            $treasury_balance->save();
+            $treasury_balance_history=   TreasuryBalanceHistory::where('permission_exchange_id',$id)->first();
+            $treasury_balance_history->balance_before= $treasury_balance->value;
+            $treasury_balance_history->balance_request=$request->price;
+            $treasury_balance_history->balance_after=$treasury_balance->value - $request->price ;
+            $treasury_balance_history->save();
+            $treasury_balance->value= $treasury_balance->value - $request->price ;
+            $treasury_balance->save();
+
+
+        }
         $permission_exchanges->date = $request->date;
         $permission_exchanges->expense_id = $request->expense_id;
         $permission_exchanges->price =$request->price;
         $permission_exchanges->expense_by = $request->expense_by;
         $permission_exchanges->description = $request->description;
+
       if(  $permission_exchanges->save()){
 
             flash(translate('Permission Exchange has been updated successfully'))->success();
@@ -146,15 +167,18 @@ class PermissionExchangeController extends Controller
      */
     public function destroy($id)
     {
-//        $flash_deal = FlashDeal::findOrFail($id);
-//        foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product) {
-//            $flash_deal_product->delete();
-//        }
-//
-//        foreach ($flash_deal->flash_deal_translations as $key => $flash_deal_translation) {
-//            $flash_deal_translation->delete();
-//        }
-//
+        $permission_exchanges = PermissionExchange::findOrFail($id);
+        if($permission_exchanges->status == 1 ){
+            if($permission_exchanges->expense_by == "2") {
+                $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+            }else{
+                $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+            }
+            $treasury_balance->value= $treasury_balance->value + $permission_exchanges->price ;
+            $treasury_balance->save();
+            $treasury_balance_history=   TreasuryBalanceHistory::where('permission_exchange_id',$id)->first();
+            $treasury_balance_history->delete();
+        }
         PermissionExchange::destroy($id);
         flash(translate('Permission Exchange has been deleted successfully'))->success();
         return redirect()->route('permission_exchanges.index');

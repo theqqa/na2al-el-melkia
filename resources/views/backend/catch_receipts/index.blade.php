@@ -75,9 +75,9 @@
 <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{ route('catch_receipt.download', $catch_receipt->id) }}" title="{{ translate('Download Catch Receipt') }}">
    <i class="las la-download"></i>
 </a>
-{{--                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('transactions.destroy', $catch_receipt->id)}}" title="{{ translate('Delete') }}">--}}
-{{--                                <i class="las la-trash"></i>--}}
-{{--                            </a>--}}
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('catch_receipt.destroy', $catch_receipt->id)}}" title="{{ translate('Delete') }}">
+                                <i class="las la-trash"></i>
+                            </a>
 </td>
 </tr>
 @endforeach

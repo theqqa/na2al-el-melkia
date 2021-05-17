@@ -86,6 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
       Route::resource('catch_receipts', 'CatchReceiptController');
     Route::get('catch_receipt/{catch_receipt_id}', 'CatchReceiptController@catch_receipt_download')->name('catch_receipt.download');
     Route::post('catch_receipt_approved', 'CatchReceiptController@update_status')->name('catch_receipt.approved');
+    Route::get('/catch_receipts/destroy/{id}', 'CatchReceiptController@destroy')->name('catch_receipt.destroy');
 
     //permission exchange
     Route::resource('permission_exchanges', 'PermissionExchangeController');
