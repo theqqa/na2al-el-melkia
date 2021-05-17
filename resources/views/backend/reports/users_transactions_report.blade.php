@@ -150,9 +150,9 @@
                     <table class="table table-bordered  mb-0">
                         <thead>
                         <tr>
-                            <th data-breakpoints="lg">{{ translate('Sub Representative') }}</th>
-                            <th>{{ translate('Ownership') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Renewal') }}</th>
+                            <th class="col-4">{{ translate('Sub Representative') }}</th>
+                            <th class="col-4">{{ translate('Ownership') }}</th>
+                            <th class="col-4">{{ translate('Renewal') }}</th>
                         </tr>
                         </thead>
                     <tbody>
