@@ -29,7 +29,7 @@
         $renewal=\App\Models\Transaction::where('representative_id',$representative->id)->Where(function($query) {
             $query->where('type',2)
                 ->orWhere('type', 3);
-        })->coun
+        })->count();
         ?>
         <div class="card-body">
           <form action="{{ route('representatives.update', $representative->id) }}" method="POST">

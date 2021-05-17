@@ -202,18 +202,28 @@ if ($catch_receipt->save()) {
      */
     public function destroy($id)
     {
-//        $flash_deal = FlashDeal::findOrFail($id);
-//        foreach ($flash_deal->flash_deal_products as $key => $flash_deal_product) {
-//            $flash_deal_product->delete();
-//        }
-//
-//        foreach ($flash_deal->flash_deal_translations as $key => $flash_deal_translation) {
-//            $flash_deal_translation->delete();
-//        }
-//
-//        FlashDeal::destroy($id);
-//        flash(translate('FlashDeal has been deleted successfully'))->success();
-//        return redirect()->route('flash_deals.index');
+        $catch_receipt_old = CatchReceipt::findOrFail($id);
+
+        if($catch_receipt_old->payment_by == "2") {
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance')->first();
+        }else{
+            $treasury_balance = BusinessSetting::where('type', 'treasury_balance_cache')->first();
+        }
+        $treasury_balance->value = $treasury_balance->value - $catch_receipt_old->price;
+        $treasury_balance->save();
+        $treasury_balance_history_old = TreasuryBalanceHistory::where('catch_receipt_id', $catch_receipt_old->id)->first();
+        $treasury_balance_history_old->delete();
+
+
+        $treasury_balance_history_old = RepresentativeHistory::whereRepId($catch_receipt_old->representative->id)->where('catch_receipt_id', $catch_receipt_old->id)->first();
+        $catch_receipt_old->representative->deserved_amount = $catch_receipt_old->representative->deserved_amount + $catch_receipt_old->price;
+        $catch_receipt_old->representative->save();
+
+
+        $treasury_balance_history_old->delete();
+        $catch_receipt_old->delete();
+        flash(translate('Catch receipt has been deleted successfully'))->success();
+        return redirect()->route('backend.catch_receipts.index');
     }
 
     public function catch_receipt_download($id)

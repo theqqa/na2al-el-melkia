@@ -93,16 +93,19 @@
                             <a class="btn btn-soft-info btn-icon btn-circle btn-sm"  href="{{route('permission_exchanges.show',$permission_exchange->id )}}" title="{{ translate('Show') }}">
                                 <i class="las la-eye"></i>
                             </a>
-                        @if($permission_exchange->approved == 0)
 
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" @if($permission_exchange->approved == 0) href="{{route('permission_exchanges.edit',$permission_exchange->id )}}" @else disabled  @endif title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  href="{{route('permission_exchanges.edit',$permission_exchange->id )}}"  title="{{ translate('Edit') }}">
                                 <i class="las la-edit"></i>
                             </a>
                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" @if($permission_exchange->approved == 0) data-href="{{route('permission_exchanges.destroy', $permission_exchange->id)}}" @else disabled="" @endif  title="{{ translate('Delete') }}">
                                 <i class="las la-trash"></i>
                             </a>
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('permission.download', $permission_exchange->id) }}" title="{{ translate('Download Permission D') }}">
+                                <i class="las la-download"></i>
+                            </a>
+                            @if($permission_exchange->approved == 1)
 
-                        @else
+
                                 @if($permission_exchange->status == 0 && auth()->user()->user_type == 'staff' )
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" @if($permission_exchange->status == 0) onclick="confirm_permission({{ $permission_exchange->id }});" @else disabled @endif  title="{{ translate('The possibility of exchange') }}">
                                     <i class="las la-check-double"></i>
@@ -111,9 +114,7 @@
 {{--                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" @if($permission_exchange->approved == 1) data-href="{{route('permission_exchanges.destroy', $permission_exchange->id)}}" @else disabled="" @endif  title="{{ translate('Delete') }}">--}}
 {{--                                    <i class="las la-print"></i>--}}
 {{--                                </a>--}}
-                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('permission.download', $permission_exchange->id) }}" title="{{ translate('Download Permission D') }}">
-                                        <i class="las la-download"></i>
-                                    </a>
+
 
     @endif
                         </td>
