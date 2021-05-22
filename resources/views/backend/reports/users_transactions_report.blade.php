@@ -156,24 +156,32 @@
                         </tr>
                         </thead>
                     <tbody>
+
                     @foreach($newvalue as $newkey_1=>$newvalue_1)
                         @if(!is_array($newvalue_1))
 
                         <tr>
                             <td>{{$newkey_1}}</td>
-                            @if(  array_key_exists($newkey_1,$count_ownership_res[$newkey]))
-                                <?php
-                                $total_count_owner +=$newvalue_1;
-                                ?>
-                            <td>{{$newvalue_1}}</td>
-                                <td>--</td>
-                                @else
+                            @if(!empty($count_ownership_res[$newkey]))
+                                @if(  array_key_exists($newkey_1,$count_ownership_res[$newkey]))
+                                    <?php
+                                    $total_count_owner +=$newvalue_1;
+                                    ?>
+                                    <td>{{$newvalue_1}}</td>
+                                    <td>--</td>
+                            @endif
+                            @elseif(!empty($count_renewal_res[$newkey]))
+                            @if(  array_key_exists($newkey_1,$count_renewal_res[$newkey]))
                                 <?php
                                 $total_count_renewal +=$newvalue_1;
                                 ?>
                                 <td>--</td>
                                 <td>{{$newvalue_1}}</td>
                              @endif
+                            @else
+                                <td>--</td>
+                                <td>--</td>
+                            @endif
                         </tr>
                         @else
                             <tr>
