@@ -91,13 +91,13 @@
               <div class="form-group row">
                   <label class="col-sm-3 col-from-label" for="initial_balance">{{translate('Number of renewal service')}}</label>
                   <div class="col-sm-9">
-                      <input type="number" placeholder="{{translate('Number of renewal service')}}" id="initial_balance"  value="{{$renewal}}" name="initial_balance" class="form-control" required>
+                      <input type="number" placeholder="{{translate('Number of renewal service')}}"  value="{{$renewal}}"  class="form-control" readonly  required>
                   </div>
               </div>
               <div class="form-group row">
                   <label class="col-sm-3 col-from-label" for="initial_balance">{{translate('Number of Ownership service')}}</label>
                   <div class="col-sm-9">
-                      <input type="number" placeholder="{{translate('Number of Ownership service')}}" id="initial_balance"  value="{{$ownership}}" name="initial_balance" class="form-control" required>
+                      <input type="number" placeholder="{{translate('Number of Ownership service')}}"  value="{{$ownership}}" class="form-control" readonly required>
                   </div>
               </div>
                 <div class="form-group mb-0 text-right">

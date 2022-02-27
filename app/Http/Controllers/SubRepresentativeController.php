@@ -112,7 +112,7 @@ class SubRepresentativeController extends Controller
             $data=$request->all();
 
             Validator::make($data, [
-                'name' => 'required|unique:representatives,name,'.$id,
+                'name' => 'required|unique:sub_representatives,name,'.$id,
             ])->validate();
         $user = SubRepresentative::findOrFail($id);
             $user->name = $request->name;
